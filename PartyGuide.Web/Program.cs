@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PartyGuide.DataAccess.Data;
+using PartyGuide.DataAccess.DbManagers;
+using PartyGuide.DataAccess.Interfaces;
+using PartyGuide.Domain.Interfaces;
+using PartyGuide.Domain.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +17,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IServiceManager, ServiceManager>();
+builder.Services.AddScoped<IServiceDbManager, ServiceDbManager>();
 
 var app = builder.Build();
 

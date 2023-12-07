@@ -1,0 +1,77 @@
+﻿@using PartyGuide.Domain.Models;
+@model ServiceModel
+@{
+	ViewData["Title"] = "Add New Model";
+}
+
+<style>
+	.validation-message {
+		color: #dc3545;
+		font-size: 0.9rem;
+		margin-top: 5px;
+	}
+</style>
+
+@using (Html.BeginForm())
+{
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-lg-6">
+				<div class="card">
+					<div class="card-header bg-primary text-white">
+						<h3 class="card-title">Add New Service</h3>
+					</div>
+					<div class="card-body">
+						<div class="mb-3">
+							<label class="form-label">Title</label>
+							<input asp-for="Title" class="form-control" />
+							@Html.ValidationMessageFor(m => m.Title, "", new {@class = "validation-message"})
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Category</label>
+							<select asp-for="Category" class="form-select">
+								<option value="Birthday">Birthday</option>
+								<option value="Anniversary">Anniversary</option>
+								<option value="Wedding">Wedding</option>
+								<!-- Add more options as needed -->
+							</select>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Description</label>
+							<input asp-for="Description" class="form-control" />
+							@Html.ValidationMessageFor(m => m.Description, "", new {@class = "validation-message"})
+
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Phone Number</label>
+							<input asp-for="PhoneNumber" class="form-control" />
+							@Html.ValidationMessageFor(m => m.PhoneNumber, "", new {@class = "validation-message"})
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Start Price Range</label>
+							<input asp-for="StartPriceRange" class="form-control" />
+							@Html.ValidationMessageFor(m => m.StartPriceRange, "", new {@class = "validation-message"})
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">End Price Range</label>
+							<input asp-for="EndPriceRange" class="form-control" />
+							@Html.ValidationMessageFor(m => m.EndPriceRange, "", new {@class = "validation-message"})
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Location</label>
+							<input asp-for="Location" class="form-control" />
+							@Html.ValidationMessageFor(m => m.PhoneNumber, "", new {@class = "validation-message"})
+						</div>
+
+						<button type="submit" class="btn btn-primary">Create</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}

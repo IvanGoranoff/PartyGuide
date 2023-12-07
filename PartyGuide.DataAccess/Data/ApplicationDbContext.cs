@@ -7,7 +7,8 @@ namespace PartyGuide.DataAccess.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
-        {
+        {   
         }
+        public DbSet<ServiceTable> ServiceTables { get; set; }
     }
 }

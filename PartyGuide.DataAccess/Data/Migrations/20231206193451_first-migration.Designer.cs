@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PartyGuide.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using PartyGuide.DataAccess.Data;
 namespace PartyGuide.DataAccess.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231206193451_first-migration")]
+    partial class firstmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,52 +225,6 @@ namespace PartyGuide.DataAccess.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("PartyGuide.DataAccess.Data.ServiceTable", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("CATEGORY");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DESCRIPTION");
-
-                    b.Property<int?>("EndPriceRange")
-                        .HasColumnType("int")
-                        .HasColumnName("ENDPRICERANGE");
-
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("IMAGE");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("LOCATION");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("PHONENUMBER");
-
-                    b.Property<int?>("StartPriceRange")
-                        .HasColumnType("int")
-                        .HasColumnName("STARTPRICERANGE");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("TITLE");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ServiceTable");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

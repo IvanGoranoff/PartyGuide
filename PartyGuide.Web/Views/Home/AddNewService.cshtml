@@ -12,7 +12,7 @@
 	}
 </style>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("AddNewService", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 	<div class="container mt-5">
 		<div class="row justify-content-center">
@@ -24,8 +24,13 @@
 					<div class="card-body">
 						<div class="mb-3">
 							<label class="form-label">Title</label>
-							<input asp-for="Title" class="form-control" />
+							<input asp-for="Title" class="form-control" placeholder="Choose a grasping title" />
 							@Html.ValidationMessageFor(m => m.Title, "", new {@class = "validation-message"})
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Image</label>
+							<input type="file" name="imageFile" />
 						</div>
 
 						<div class="mb-3">
@@ -39,33 +44,33 @@
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Description</label>
-							<input asp-for="Description" class="form-control" />
+							<input asp-for="Description" class="form-control" placeholder="Enter a short description of your service" />
 							@Html.ValidationMessageFor(m => m.Description, "", new {@class = "validation-message"})
 
 						</div>
 
 						<div class="mb-3">
 							<label class="form-label">Phone Number</label>
-							<input asp-for="PhoneNumber" class="form-control" />
+							<input asp-for="PhoneNumber" class="form-control" placeholder="Where can your clients reach you" />
 							@Html.ValidationMessageFor(m => m.PhoneNumber, "", new {@class = "validation-message"})
 						</div>
 
 						<div class="mb-3">
 							<label class="form-label">Start Price Range</label>
-							<input asp-for="StartPriceRange" class="form-control" />
+							<input asp-for="StartPriceRange" class="form-control" placeholder="Enter the lowest cost of you service" />
 							@Html.ValidationMessageFor(m => m.StartPriceRange, "", new {@class = "validation-message"})
 						</div>
 
 						<div class="mb-3">
 							<label class="form-label">End Price Range</label>
-							<input asp-for="EndPriceRange" class="form-control" />
+							<input asp-for="EndPriceRange" class="form-control" placeholder="Enter the highest price of a product you offer" />
 							@Html.ValidationMessageFor(m => m.EndPriceRange, "", new {@class = "validation-message"})
 						</div>
 
 						<div class="mb-3">
 							<label class="form-label">Location</label>
-							<input asp-for="Location" class="form-control" />
-							@Html.ValidationMessageFor(m => m.PhoneNumber, "", new {@class = "validation-message"})
+							<input asp-for="Location" class="form-control" placeholder="Enter your service's whereabouts" />
+							@Html.ValidationMessageFor(m => m.Location, "", new {@class = "validation-message"})
 						</div>
 
 						<button type="submit" class="btn btn-primary">Create</button>

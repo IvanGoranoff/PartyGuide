@@ -17,30 +17,46 @@ namespace PartyGuide.Web.Controllers
             this.serviceManager = serviceManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var models = await serviceManager.GetAllServicesAsync();
+
+            // Get success message from TempData
+            ViewBag.SuccessMessage = TempData["SuccessMessage"] as string;
+
+            return View(models);
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddNewService()
+        public IActionResult AddNewService()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddNewService(ServiceModel model)
+        public async Task<IActionResult> AddNewService(ServiceModel model, IFormFile imageFile)
         {
-
-            if (!ModelState.IsValid)
+			if (!ModelState.IsValid)
             {
                 return View();
             }
             try
             {
-                await serviceManager.AddNewService(model);
+				if (imageFile != null && imageFile.Length > 0)
+				{
+					using (var stream = new MemoryStream())
+					{
+						imageFile.CopyTo(stream);
+						model.Image = stream.ToArray();
+					}
+				}
 
-                return Ok();
+				await serviceManager.AddNewService(model);
+
+                // Set success message in TempData
+                TempData["SuccessMessage"] = "Service added successfully.";
+
+                return RedirectToAction("Index");
 
             }
             catch (Exception ex)

@@ -12,7 +12,7 @@
 	}
 </style>
 
-@using (Html.BeginForm("AddNewService", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("AddNewService", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 	<div class="container mt-5">
 		<div class="row justify-content-center">
@@ -31,7 +31,6 @@
 							<label class="form-label">Image</label>
 							<div class="input-group">
 								<input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*">
-								@*<label class="input-group-text" for="imageFile">Choose File</label>*@
 							</div>
 						</div>
 
@@ -42,6 +41,7 @@
 								<option value="Anniversary">Anniversary</option>
 								<option value="Wedding">Wedding</option>
 								<!-- Add more options as needed -->
+								<!-- Implement Database table for categories -->
 							</select>
 						</div>
 						<div class="mb-3">

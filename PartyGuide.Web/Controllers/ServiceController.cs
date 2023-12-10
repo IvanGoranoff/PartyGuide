@@ -6,12 +6,12 @@ using System.Diagnostics;
 
 namespace PartyGuide.Web.Controllers
 {
-    public class HomeController : Controller
+    public class ServiceController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<ServiceController> _logger;
         private readonly IServiceManager serviceManager;
 
-        public HomeController(ILogger<HomeController> logger, IServiceManager serviceManager)
+        public ServiceController(ILogger<ServiceController> logger, IServiceManager serviceManager)
         {
             _logger = logger;
             this.serviceManager = serviceManager;
@@ -27,6 +27,13 @@ namespace PartyGuide.Web.Controllers
             return View(models);
         }
 
+        public async Task<IActionResult> ServiceDetails(int? id)
+            {
+            var model = await serviceManager.GetServiceByIdAsync(id);
+
+            return View(model);
+        }
+
         [HttpGet]
         public IActionResult AddNewService()
         {
@@ -36,6 +43,9 @@ namespace PartyGuide.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewService(ServiceModel model, IFormFile imageFile)
         {
+			// Exclude Image property from validation
+			ModelState.Remove("imageFile");
+
 			if (!ModelState.IsValid)
             {
                 return View();
@@ -49,6 +59,13 @@ namespace PartyGuide.Web.Controllers
 						imageFile.CopyTo(stream);
 						model.Image = stream.ToArray();
 					}
+				}
+				else
+				{
+					// No image uploaded, set the default image
+					string defaultImagePath = Path.Combine("wwwroot", "images", "banner.png");
+					byte[] defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
+					model.Image = defaultImageBytes;
 				}
 
 				await serviceManager.AddNewService(model);

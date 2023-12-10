@@ -1,4 +1,5 @@
-﻿@model List<PartyGuide.Domain.Models.ServiceModel>
+﻿@using PartyGuide.Domain.Models;
+@model List<ServiceModel>
 
 @{
     ViewData["Title"] = "Service Catalog";
@@ -27,7 +28,7 @@
                         <p class="card-text">Phone: @service.PhoneNumber</p>
                         <p class="card-text">Price Range: $@service.StartPriceRange - $@service.EndPriceRange</p>
                         <p class="card-text">Location: @service.Location</p>
-                        <a href="@Url.Action("Details", "Service", new { id = service.Id })" class="btn btn-primary">Details</a>
+                        <a href="@Url.Action("ServiceDetails", "Service", new { id = service.Id })" class="btn btn-primary">Details</a>
                     </div>
                 </div>
             </div>

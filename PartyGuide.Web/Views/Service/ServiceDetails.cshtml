@@ -1,0 +1,112 @@
+﻿@using PartyGuide.Domain.Models;
+@model ServiceModel
+
+@{
+	ViewData["Title"] = "Service Catalog";
+}
+
+<div class="container mt-5">
+	<div class="row">
+
+		<!-- Main Panel (left side) -->
+		<div class="col-md-8">
+			<div class="card mb-4">
+				<div class="card-header bg-primary text-white">
+					<h3 class="card-title">@Model.Title</h3>
+				</div>
+				<div class="card-body">
+					@if (Model.Image != null && Model.Image.Length > 0)
+					{
+						<img src="@($"data:image/png;base64,{Convert.ToBase64String(Model.Image)}")" class="card-img-top img-fluid mb-4" alt="@Model.Title" style="object-fit: cover;">
+					}
+					<p class="card-text"><strong>Description:</strong><br />@Model.Description</p>
+					<p class="card-text"><strong>Phone:</strong> @Model.PhoneNumber</p>
+					<p class="card-text"><strong>Price Range:</strong> $@Model.StartPriceRange - $@Model.EndPriceRange</p>
+					<p class="card-text"><strong>Location:</strong> @Model.Location</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- Additional Information and Contact the Seller Panels (right side) -->
+		<div class="col-md-4">
+			<div class="card mb-4">
+				<div class="card-header bg-secondary text-white">
+					<h4 class="card-title">Additional Information</h4>
+				</div>
+				<div class="card-body">
+					<!-- Add additional information here -->
+				</div>
+			</div>
+
+			<div class="card mb-4">
+				<div class="card-header bg-info text-white">
+					<h4 class="card-title">Contact the Seller</h4>
+				</div>
+				<div class="card-body">
+					<p class="card-text">If you're interested in this service, feel free to contact the seller for more details or to make arrangements.</p>
+					<button class="btn btn-primary">Contact Seller</button>
+				</div>
+			</div>
+
+			<!-- Google Calendar Panel (right side) -->
+
+			<div class="card mb-4">
+				<div class="card-header bg-success text-white">
+					<h4 class="card-title">Google Calendar</h4>
+				</div>
+				<div class="card-body">
+					<div id="googleCalendar" style="height: 300px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- JavaScript for Google Calendar integration -->
+<script src="https://apis.google.com/js/api.js"></script>
+<script>
+	gapi.load('client', initGoogleCalendar);
+
+	function initGoogleCalendar() {
+		gapi.client.init({
+			apiKey: 'AIzaSyBftVk0QXMzgqkVf5NNU8QBY0-mTQXo-JM', // Replace with your API key
+			discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+		}).then(function () {
+			// Fetch available days from the Google Calendar API
+			fetchAvailableDays();
+		});
+	}
+
+	function fetchAvailableDays() {
+		// Implement logic to fetch available days from Google Calendar API
+		// Example: Make a request to the Google Calendar API using gapi.client.calendar.events.list
+		// and extract the available days.
+
+		// Dummy data for demonstration purposes
+		var availableDays = ["2023-12-20", "2023-12-22", "2023-12-25"];
+
+		// Render the Google Calendar using the available days
+		renderGoogleCalendar(availableDays);
+	}
+
+	function renderGoogleCalendar(availableDays) {
+		// Implement logic to render the Google Calendar using a JavaScript calendar library.
+		// Example: Use FullCalendar (https://fullcalendar.io/) to render the calendar.
+
+		// Dummy initialization for demonstration purposes
+		$('#googleCalendar').fullCalendar({
+			events: availableDays.map(function (day) {
+				return {
+					title: 'Available',
+					start: day,
+					allDay: true,
+				};
+			}),
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay',
+			},
+		});
+	}
+</script>

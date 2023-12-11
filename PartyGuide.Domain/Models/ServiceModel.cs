@@ -44,5 +44,7 @@ namespace PartyGuide.Domain.Models
 		[Required(ErrorMessage = "Field Required")]
 		[RegularExpression(@"^.{3,}$", ErrorMessage = "Location is to short")]
 		public string Location { get; set; }
+
+		public string CreatedBy { get; set; }
     }
 }

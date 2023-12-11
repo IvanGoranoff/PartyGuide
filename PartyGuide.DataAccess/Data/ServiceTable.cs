@@ -27,16 +27,19 @@ namespace PartyGuide.DataAccess.Data
         [Column("IMAGE")]
         public byte[] Image { get; set; }
 
-        [Column("PHONENUMBER")]
+        [Column("PHONE_NUMBER")]
         public string PhoneNumber { get; set; }
 
-        [Column("STARTPRICERANGE")]
+        [Column("START_PRICE_RANGE")]
         public int? StartPriceRange { get; set; }
 
-        [Column("ENDPRICERANGE")]
+        [Column("END_PRICE_RANGE")]
         public int? EndPriceRange { get; set; }
 
         [Column("LOCATION")]
         public string Location { get; set; }
-    }
+
+		[Column("CREATED_BY")]
+		public string CreatedBy { get; set; }
+	}
 }

@@ -24,19 +24,33 @@ namespace PartyGuide.Domain.Managers
             await serviceDbManager.AddNewService(table);
         }
 
-        public async Task<List<ServiceModel>> GetAllServicesAsync()
+		public async Task DeleteService(int? id)
+		{
+            await serviceDbManager.DeleteService(id);
+
+		}
+
+		public async Task<List<ServiceModel>> GetAllServicesAsync()
         {
             var tables = await serviceDbManager.GetAllServicesAsync();
 
             return adapter.TransformTablesToModelsList(tables);
         }
 
-        public async Task<ServiceModel> GetServiceByIdAsync(int? id)
+		public async Task<List<ServiceModel>> GetAllServicesByUserAsync(string? currentUser)
+		{
+			var tables = await serviceDbManager.GetAllServicesByUserAsync(currentUser);
+
+			return adapter.TransformTablesToModelsList(tables);
+		}
+
+		public async Task<ServiceModel> GetServiceByIdAsync(int? id)
         {
             var table = await serviceDbManager.GetServiceByIdAsync(id);
 
             return adapter.TransformTableToModel(table);
         }
+
         public async Task<List<ServiceModel>> GetServiceTablesFilterAsync(string category, string title, string startPriceRange, string endPriceRange, string location)
         {
             var tables = await serviceDbManager.GetServiceTablesFilterAsync(category, title, startPriceRange, endPriceRange, location);

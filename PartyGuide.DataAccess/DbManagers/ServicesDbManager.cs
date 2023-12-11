@@ -18,9 +18,15 @@ namespace PartyGuide.DataAccess.DbManagers
             return await dbContext.ServiceTables.Where(s => s.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<List<ServiceTable>> GetAllServicesAsync()
+		public async Task<List<ServiceTable>> GetAllServicesAsync()
+		{
+			return await dbContext.ServiceTables.ToListAsync();
+
+		}
+
+        public async Task<List<ServiceTable>> GetAllServicesByUserAsync(string currentUser)
         {
-            return await dbContext.ServiceTables.ToListAsync();
+            return await dbContext.ServiceTables.Where(x => x.CreatedBy == currentUser).ToListAsync();
         }
 
         public async Task<List<ServiceTable>> GetServiceTablesFilterAsync(string category,
@@ -66,5 +72,13 @@ namespace PartyGuide.DataAccess.DbManagers
             await dbContext.SaveChangesAsync();
         }
 
-    }
+		public async Task DeleteService(int? id)
+		{
+			var table = await dbContext.ServiceTables.Where(s => s.Id == id).FirstOrDefaultAsync();
+
+		    dbContext.ServiceTables.Remove(table);
+
+			await dbContext.SaveChangesAsync();
+		}
+	}
 }

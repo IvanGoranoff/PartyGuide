@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PartyGuide.Domain.Interfaces;
 using PartyGuide.Domain.Models;
 using PartyGuide.Web.Models;
@@ -34,14 +35,16 @@ namespace PartyGuide.Web.Controllers
             return View(model);
         }
 
-        [HttpGet]
+		[Authorize]
+		[HttpGet]
         public IActionResult AddNewService()
         {
             return View();
         }
 
+		[Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddNewService(ServiceModel model, IFormFile imageFile)
+		public async Task<IActionResult> AddNewService(ServiceModel model, IFormFile imageFile)
         {
 			// Exclude Image property from validation
 			ModelState.Remove("imageFile");

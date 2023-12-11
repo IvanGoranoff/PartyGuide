@@ -10,18 +10,22 @@ namespace PartyGuide.Domain.Models
         public string Category { get; set; }
 
         [Required(ErrorMessage = "Field Required")]
-        [RegularExpression(@"^.{5,}$", ErrorMessage = "Title is to short")]
+        [RegularExpression(@"^.{5,40}$", ErrorMessage = "Title must be between 5 and 40 characters")]
         public string Title { get; set; }
 
 		[Required(ErrorMessage = "Field Required")]
-		[RegularExpression(@"^.{5,}$", ErrorMessage = "Description is to short")]
+		[RegularExpression(@"^.{5,300}$", ErrorMessage = "Description must be between 5 and 300 characters")]
 		public string Description { get; set; }
 
-        public byte[]? Image { get; set; }
+		[Required(ErrorMessage = "Field Required")]
+		[RegularExpression(@"^.{40,300}$", ErrorMessage = "Extended must be between 40 and 300 characters")]
+		public string ExtendedDescription { get; set; }
+
+		public byte[]? Image { get; set; }
 
 
 		[Required(ErrorMessage = "Field Required")]
-		[RegularExpression(@"^.{8,}$", ErrorMessage = "PhoneNumber is to short")]
+		[RegularExpression(@"^.{8,15}$", ErrorMessage = "PhoneNumber must be between 8 and 15 characters")]
 		public string PhoneNumber { get; set; }
 
 		[DisplayName("Start Price Range")]
@@ -38,7 +42,7 @@ namespace PartyGuide.Domain.Models
 
 
 		[Required(ErrorMessage = "Field Required")]
-		[RegularExpression(@"^.{5,}$", ErrorMessage = "Location is to short")]
+		[RegularExpression(@"^.{3,}$", ErrorMessage = "Location is to short")]
 		public string Location { get; set; }
     }
 }

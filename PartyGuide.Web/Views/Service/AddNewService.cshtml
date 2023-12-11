@@ -10,13 +10,18 @@
 		font-size: 0.9rem;
 		margin-top: 5px;
 	}
+
+	#previewCard {
+		max-width: 100%;
+	}
 </style>
 
 @using (Html.BeginForm("AddNewService", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
 	<div class="container mt-5">
-		<div class="row justify-content-center">
-			<div class="col-lg-6">
+		<div class="row">
+			<!-- Left Panel -->
+			<div class="col-lg-8 mb-4">
 				<div class="card">
 					<div class="card-header bg-primary text-white">
 						<h3 class="card-title">Add New Service</h3>
@@ -25,7 +30,7 @@
 						<div class="mb-3">
 							<label class="form-label">Title</label>
 							<input id="Title" asp-for="Title" class="form-control" placeholder="Choose a grasping title" />
-							@Html.ValidationMessageFor(m => m.Title, "", new {@class = "validation-message"})
+							@Html.ValidationMessageFor(m => m.Title, "", new { @class = "validation-message" })
 						</div>
 						<div class="mb-3">
 							<label class="form-label">Image</label>
@@ -79,75 +84,72 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-}
 
-<!-- Add a preview card container -->
-<div class="container mt-5">
-	<div class="row">
-		<div class="col-md-4 mb-4">
-			<div class="card" id="previewCard">
-				<img id="previewImage" class="card-img-top img-fluid" alt="Service Title" style="height: 200px; object-fit: cover;" src="~/images/banner.png">
-				<div class="card-body">
-					<h5 class="card-title">Service Title</h5>
-					<p class="card-text">Service Description</p>
-					<p class="card-text">Phone: Phone Number</p>
-					<p class="card-text">Price Range: Start Price - End Price</p>
-					<p class="card-text">Location: Service Location</p>
-					<a href="#" class="btn btn-primary">Details</a>
+			<!-- Right Panel -->
+			<div class="col-md-4">
+				<!-- Preview Card -->
+				<div class="card" id="previewCard">
+					<img id="previewImage" class="card-img-top img-fluid" alt="Service Title" src="~/images/banner.png">
+					<div class="card-body">
+						<h5 class="card-title">Service Title</h5>
+						<p class="card-text">Service Description</p>
+						<p class="card-text">Phone: Phone Number</p>
+						<p class="card-text">Price Range: Start Price - End Price</p>
+						<p class="card-text">Location: Service Location</p>
+						<a href="#" class="btn btn-primary">Details</a>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+}
 
-<!-- Add JavaScript to update the preview card dynamically -->
-<script>
-	// Function to update the preview card
-	function updatePreviewCard() {
-		// Get values from the form
-		var title = document.getElementById('Title').value;
-		var description = document.getElementById('Description').value;
-		var phoneNumber = document.getElementById('PhoneNumber').value;
-		var startPriceRange = document.getElementById('StartPriceRange').value;
-		var endPriceRange = document.getElementById('EndPriceRange').value;
-		var location = document.getElementById('Location').value;
+	<!-- Add JavaScript to update the preview card dynamically -->
+	<script>
+		// Function to update the preview card
+		function updatePreviewCard() {
+			// Get values from the form
+			var title = document.getElementById('Title').value;
+			var description = document.getElementById('Description').value;
+			var phoneNumber = document.getElementById('PhoneNumber').value;
+			var startPriceRange = document.getElementById('StartPriceRange').value;
+			var endPriceRange = document.getElementById('EndPriceRange').value;
+			var location = document.getElementById('Location').value;
 
-		// Update the preview card content
-		document.getElementById('previewCard').innerHTML = `
-							<img id="previewImage" class="card-img-top img-fluid" alt="${title}" style="height: 200px; object-fit: cover;">
-							<div class="card-body">
-								<h5 class="card-title">${title}</h5>
-								<p class="card-text">${description}</p>
-								<p class="card-text">Phone: ${phoneNumber}</p>
-								<p class="card-text">Price Range: $${startPriceRange} - $${endPriceRange}</p>
-								<p class="card-text">Location: ${location}</p>
-								<a href="#" class="btn btn-primary">Details</a>
-							</div>
-						`;
+			// Update the preview card content
+			document.getElementById('previewCard').innerHTML = `
+																<img id="previewImage" class="card-img-top img-fluid" alt="${title}" style="height: 200px; object-fit: cover;">
+																<div class="card-body">
+																	<h5 class="card-title">${title}</h5>
+																	<p class="card-text">${description}</p>
+																	<p class="card-text">Phone: ${phoneNumber}</p>
+																	<p class="card-text">Price Range: $${startPriceRange} - $${endPriceRange}</p>
+																	<p class="card-text">Location: ${location}</p>
+																	<a href="#" class="btn btn-primary">Details</a>
+																</div>
+															`;
 
-		// Read and display the selected image
-		var inputImage = document.getElementById('imageFile');
-		if (inputImage.files && inputImage.files[0]) {
-			var reader = new FileReader();
-			reader.onload = function (e) {
-				document.getElementById('previewImage').src = e.target.result;
-			};
-			reader.readAsDataURL(inputImage.files[0]);
+			// Read and display the selected image
+			var inputImage = document.getElementById('imageFile');
+			if (inputImage.files && inputImage.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					document.getElementById('previewImage').src = e.target.result;
+				};
+				reader.readAsDataURL(inputImage.files[0]);
+			}
+			else {
+				// Use a default image if none is selected
+				document.getElementById('previewImage').src = fullUrl + '/images/banner.png'; // Replace with the path to your default image
+			}
 		}
-		else {
-			// Use a default image if none is selected
-			document.getElementById('previewImage').src = fullUrl + '/images/banner.png'; // Replace with the path to your default image
-		}
-	}
 
-	// Hook up the function to form input events (you may need to adjust based on your actual form elements)
-	document.getElementById('Title').addEventListener('input', updatePreviewCard);
-	document.getElementById('Description').addEventListener('input', updatePreviewCard);
-	document.getElementById('PhoneNumber').addEventListener('input', updatePreviewCard);
-	document.getElementById('StartPriceRange').addEventListener('input', updatePreviewCard);
-	document.getElementById('EndPriceRange').addEventListener('input', updatePreviewCard);
-	document.getElementById('Location').addEventListener('input', updatePreviewCard);
-	document.getElementById('imageFile').addEventListener('change', updatePreviewCard);
-</script>
+		// Hook up the function to form input events (you may need to adjust based on your actual form elements)
+		document.getElementById('Title').addEventListener('input', updatePreviewCard);
+		document.getElementById('Description').addEventListener('input', updatePreviewCard);
+		document.getElementById('PhoneNumber').addEventListener('input', updatePreviewCard);
+		document.getElementById('StartPriceRange').addEventListener('input', updatePreviewCard);
+		document.getElementById('EndPriceRange').addEventListener('input', updatePreviewCard);
+		document.getElementById('Location').addEventListener('input', updatePreviewCard);
+		document.getElementById('imageFile').addEventListener('change', updatePreviewCard);
+	</script>

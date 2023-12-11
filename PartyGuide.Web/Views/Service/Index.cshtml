@@ -1,37 +1,46 @@
 ﻿@using PartyGuide.Domain.Models;
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 @model List<ServiceModel>
 
 @{
-    ViewData["Title"] = "Service Catalog";
+	ViewData["Title"] = "Service Catalog";
 }
 
 @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
 {
-    <div class="alert alert-success">
-        @ViewBag.SuccessMessage
-    </div>
+	<div class="alert alert-success">
+		@ViewBag.SuccessMessage
+	</div>
 }
 
 <div class="container mt-5">
-    <div class="row">
-        @foreach (var service in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    @if (service.Image != null && service.Image.Length > 0)
-                    {
-                        <img src="@($"data:image/png;base64,{Convert.ToBase64String(service.Image)}")" class="card-img-top img-fluid" alt="@service.Title" style="height: 200px; object-fit: cover;">
-                    }
-                    <div class="card-body">
-                        <h5 class="card-title">@service.Title</h5>
-                        <p class="card-text">@service.Description</p>
-                        <p class="card-text">Phone: @service.PhoneNumber</p>
-                        <p class="card-text">Price Range: $@service.StartPriceRange - $@service.EndPriceRange</p>
-                        <p class="card-text">Location: @service.Location</p>
-                        <a href="@Url.Action("ServiceDetails", "Service", new { id = service.Id })" class="btn btn-primary">Details</a>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
+	<div class="row">
+		@foreach (var service in Model)
+		{
+			<div class="col-md-4 mb-4">
+				<div class="card">
+					@if (service.Image != null && service.Image.Length > 0)
+					{
+						<img src="@($"data:image/png;base64,{Convert.ToBase64String(service.Image)}")" class="card-img-top img-fluid" alt="@service.Title" style="height: 200px; object-fit: cover;">
+					}
+					<div class="card-body">
+						<h5 class="card-title">@service.Title</h5>
+						<p class="card-text">@service.Description</p>
+						<p class="card-text">Phone: @service.PhoneNumber</p>
+						<p class="card-text">Price Range: $@service.StartPriceRange - $@service.EndPriceRange</p>
+						<p class="card-text">Location: @service.Location</p>
+						<a href="@Url.Action("ServiceDetails", "Service", new { id = service.Id })" class="btn btn-primary">Details</a>
+						@if (User.IsInRole("Admin"))
+						{
+							<a href="@Url.Action("ServiceDetails", "Service", new { id = service.Id })" class="btn btn-primary">Details</a>
+						}
+					</div>
+				</div>
+			</div>
+		}
+	</div>
 </div>

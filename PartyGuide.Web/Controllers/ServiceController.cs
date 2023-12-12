@@ -23,7 +23,6 @@ namespace PartyGuide.Web.Controllers
 		{
 			var models = await serviceManager.GetAllServicesAsync();
 
-			// Get success message from TempData
 			ViewBag.SuccessMessage = TempData["SuccessMessage"] as string;
 
 			return View(models);
@@ -80,7 +79,6 @@ namespace PartyGuide.Web.Controllers
 
 				await serviceManager.AddNewService(model);
 
-				// Set success message in TempData
 				TempData["SuccessMessage"] = "Service added successfully.";
 
 				return RedirectToAction("Index");
@@ -100,7 +98,6 @@ namespace PartyGuide.Web.Controllers
 
 			var serviceModels = await serviceManager.GetAllServicesByUserAsync(currentUser);
 
-			// Get success message from TempData
 			ViewBag.SuccessMessage = TempData["SuccessMessage"] as string;
 
 			return View(serviceModels);
@@ -117,12 +114,12 @@ namespace PartyGuide.Web.Controllers
 			if (serviceModels.Exists(s => s.Id == id))
 			{
 				await serviceManager.DeleteService(id);
-				// Set success message in TempData
+
 				TempData["SuccessMessage"] = "Service deleted successfully.";
 			}
 			else
 			{
-				//service not found
+				TempData["SuccessMessage"] = "Service not found.";
 			}
 
 			return RedirectToAction("ManageServices");

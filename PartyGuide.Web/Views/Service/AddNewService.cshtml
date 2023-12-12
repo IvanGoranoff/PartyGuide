@@ -57,6 +57,13 @@
 						</div>
 
 						<div class="mb-3">
+							<label class="form-label">Extended Description</label>
+							<input id="ExtendedDescription" asp-for="ExtendedDescription" class="form-control" placeholder="Enter a thorough description of your service" />
+							@Html.ValidationMessageFor(m => m.ExtendedDescription, "", new {@class = "validation-message"})
+
+						</div>
+
+						<div class="mb-3">
 							<label class="form-label">Phone Number</label>
 							<input id="PhoneNumber" asp-for="PhoneNumber" class="form-control" placeholder="Where can your clients reach you" />
 							@Html.ValidationMessageFor(m => m.PhoneNumber, "", new {@class = "validation-message"})

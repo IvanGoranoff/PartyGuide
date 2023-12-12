@@ -21,10 +21,13 @@ namespace PartyGuide.DataAccess.Data
         [Column("TITLE")]
         public string Title { get; set; }
 
-        [Column("DESCRIPTION")]
-        public string Description { get; set; }
+		[Column("DESCRIPTION")]
+		public string Description { get; set; }
 
-        [Column("IMAGE")]
+		[Column("EXTENDED_DESCRIPTION")]
+		public string ExtendedDescription { get; set; }
+
+		[Column("IMAGE")]
         public byte[] Image { get; set; }
 
         [Column("PHONE_NUMBER")]

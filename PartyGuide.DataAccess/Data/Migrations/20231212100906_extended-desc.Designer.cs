@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PartyGuide.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using PartyGuide.DataAccess.Data;
 namespace PartyGuide.DataAccess.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231212100906_extended-desc")]
+    partial class extendeddesc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -248,10 +251,6 @@ namespace PartyGuide.DataAccess.Data.Migrations
                     b.Property<int?>("EndPriceRange")
                         .HasColumnType("int")
                         .HasColumnName("END_PRICE_RANGE");
-
-                    b.Property<string>("ExtendedDescription")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("EXTENDED_DESCRIPTION");
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("varbinary(max)")

@@ -17,6 +17,62 @@
 	</div>
 }
 
+<!-- Add a button to toggle the form -->
+<button class="btn btn-primary mb-3" id="filterToggleBtn">Toggle Filters</button>
+
+<!-- Add a collapsible form for filtering -->
+<form method="get" action="@Url.Action("Index", "Service")" class="mb-4" id="filterForm" style="display: none;">
+	<div class="card border-primary mb-12">
+		<div class="card-header">Search</div>
+		<div class="card-body text-primary">
+
+			<div class="row">
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="startPrice">Start Price</label>
+						<input type="text" id="startPriceValue" readonly style="border:0; color:#f6931f; font-weight:bold;">
+						<div id="startPriceSlider"></div>
+						<input type="hidden" name="startPrice" id="startPrice" />
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="category">Category</label>
+						<input type="text" name="category" id="category" class="form-control" />
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="title">Title</label>
+						<input type="text" name="title" id="title" class="form-control" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="endPrice">End Price</label>
+						<input type="text" id="endPriceValue" readonly style="border:0; color:#f6931f; font-weight:bold;">
+						<div id="endPriceSlider"></div>
+						<input type="hidden" name="endPrice" id="endPrice" />
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<label for="location">Location</label>
+						<input type="text" name="location" id="location" class="form-control" />
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="form-group mt-4">
+						<button type="submit" class="btn btn-primary">Apply Filters</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
 @if (Model.Count == 0)
 {
 	<div class="d-flex align-items-center" style="height: 60vh;">
@@ -58,3 +114,60 @@
 		}
 	</div>
 </div>
+
+@section scripts {
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			// Toggle the form visibility on button click
+			$("#filterToggleBtn").click(function () {
+				$("#filterForm").toggle();
+			});
+
+			// Initialize the startPrice slider
+			$("#startPriceSlider").slider({
+				range: "min",
+				value: 0,
+				min: 0,
+				max: 1000,
+				slide: function (event, ui) {
+					// Check if startPrice is greater than endPrice
+					if (ui.value >= $("#endPriceSlider").slider("value")) {
+						return false;
+					}
+
+					$("#startPriceValue").val(ui.value);
+					$("#startPrice").val(ui.value);
+				}
+			});
+
+			// Set initial value for startPrice
+			$("#startPriceValue").val($("#startPriceSlider").slider("value"));
+			$("#startPrice").val($("#startPriceSlider").slider("value"));
+
+			// Initialize the endPrice slider
+			$("#endPriceSlider").slider({
+				range: "min",
+				value: 1000,
+				min: 0,
+				max: 1000,
+				slide: function (event, ui) {
+					// Check if endPrice is less than startPrice
+					if (ui.value <= $("#startPriceSlider").slider("value")) {
+						return false;
+					}
+
+					$("#endPriceValue").val(ui.value);
+					$("#endPrice").val(ui.value);
+				}
+			});
+
+			// Set initial value for endPrice
+			$("#endPriceValue").val($("#endPriceSlider").slider("value"));
+			$("#endPrice").val($("#endPriceSlider").slider("value"));
+		});
+	</script>
+}

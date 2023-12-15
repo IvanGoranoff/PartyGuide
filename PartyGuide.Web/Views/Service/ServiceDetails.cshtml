@@ -49,11 +49,11 @@
 				</div>
 			</div>
 
-			<!-- Google Meets Panel (right side) -->
+			<!-- Google Maps Panel (right side) -->
 
 			<div class="card mb-4">
 				<div class="card-header bg-success text-white">
-					<h4 class="card-title">Arrange a Meeting</h4>
+					<h4 class="card-title">Find Us</h4>
 				</div>
 				<div class="card-body">
 					<div id="google-meet" style="height: 300px;"></div>
@@ -74,11 +74,11 @@
 			<div class="mb-3">
 				<h5 class="card-title">Rate this Service</h5>
 				<div class="rating">
-					<input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"><i class="fas fa-star"></i></label>
-					<input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
-					<input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
-					<input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
-					<input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
+					<input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"><i class="fas fa-star" id="star-ico-1"></i></label>
+					<input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"><i class="fas fa-star" id="star-ico-2"></i></label>
+					<input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"><i class="fas fa-star" id="star-ico-3"></i></label>
+					<input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"><i class="fas fa-star" id="star-ico-4"></i></label>
+					<input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"><i class="fas fa-star" id="star-ico-5"></i></label>
 				</div>
 			</div>
 			<!-- Input Field -->
@@ -138,6 +138,41 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBqBdFRdvJZQuY0WeqjCU7YbVE8BpE56Y&libraries=places"></script>
+
+
+<script>
+	function initMap() {
+		// Get the city name from the Model.Location
+		var cityName = '@Model.Location';
+
+		// Create a Geocoder instance to get the coordinates of the city
+		var geocoder = new google.maps.Geocoder();
+
+		// Initialize the map centered on the city
+		var map = new google.maps.Map(document.getElementById('google-meet'), {
+			zoom: 10, // You can adjust the initial zoom level
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		});
+
+		// Use Geocoder to get the coordinates of the city
+		geocoder.geocode({ 'address': cityName + ', Bulgaria' }, function (results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				// Center the map on the city coordinates
+				map.setCenter(results[0].geometry.location);
+
+				// Add a marker for the city
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[0].geometry.location,
+					title: cityName
+				});
+			} else {
+				console.error('Geocode was not successful for the following reason: ' + status);
+			}
+		});
+	}
+
 <script>
 	$(document).ready(function () {
 
@@ -148,6 +183,7 @@
 			$(".rating input").prop("checked", false);
 			// Check stars up to the clicked one
 			$(this).prevAll("input").prop("checked", true);
+			$(this).prevAll(".fas").addClass("checked");
 		});
 
 		$("#submitRating").on("click", function () {
@@ -175,4 +211,40 @@
 			});
 		});
 	});
+</script>
+<script>
+
+	function initMap() {
+		// Get the city name from the Model.Location
+		var cityName = '@Model.Location';
+
+		// Create a Geocoder instance to get the coordinates of the city
+		var geocoder = new google.maps.Geocoder();
+
+		// Initialize the map centered on the city
+		var map = new google.maps.Map(document.getElementById('google-meet'), {
+			zoom: 10, // You can adjust the initial zoom level
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		});
+
+		// Use Geocoder to get the coordinates of the city
+		geocoder.geocode({ 'address': cityName + ', Bulgaria' }, function (results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				// Center the map on the city coordinates
+				map.setCenter(results[0].geometry.location);
+
+				// Add a marker for the city
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[0].geometry.location,
+					title: cityName
+				});
+			} else {
+				console.error('Geocode was not successful for the following reason: ' + status);
+			}
+		});
+	}
+
+	// Initialize the map when the page is loaded
+	google.maps.event.addDomListener(window, 'load', initMap);
 </script>

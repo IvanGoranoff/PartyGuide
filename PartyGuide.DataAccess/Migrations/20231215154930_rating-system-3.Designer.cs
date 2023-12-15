@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PartyGuide.DataAccess.Data;
+using PartyGuide.DataAccess.DbContext;
 
 #nullable disable
 
 namespace PartyGuide.DataAccess.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231206193451_first-migration")]
-    partial class firstmigration
+    [Migration("20231215154930_rating-system-3")]
+    partial class ratingsystem3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,6 +227,90 @@ namespace PartyGuide.DataAccess.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("PartyGuide.DataAccess.Data.RatingTable", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("RatingTables");
+                });
+
+            modelBuilder.Entity("PartyGuide.DataAccess.Data.ServiceTable", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("CATEGORY");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("CREATED_BY");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("DESCRIPTION");
+
+                    b.Property<int?>("EndPriceRange")
+                        .HasColumnType("int")
+                        .HasColumnName("END_PRICE_RANGE");
+
+                    b.Property<string>("ExtendedDescription")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("EXTENDED_DESCRIPTION");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("IMAGE");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LOCATION");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("PHONE_NUMBER");
+
+                    b.Property<int?>("StartPriceRange")
+                        .HasColumnType("int")
+                        .HasColumnName("START_PRICE_RANGE");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("TITLE");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceTable");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -276,6 +360,22 @@ namespace PartyGuide.DataAccess.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PartyGuide.DataAccess.Data.RatingTable", b =>
+                {
+                    b.HasOne("PartyGuide.DataAccess.Data.ServiceTable", "Service")
+                        .WithMany("Ratings")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("PartyGuide.DataAccess.Data.ServiceTable", b =>
+                {
+                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

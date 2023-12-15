@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PartyGuide.DataAccess.Data;
+using PartyGuide.DataAccess.DbContext;
 
 #nullable disable
 
 namespace PartyGuide.DataAccess.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231207192638_string-to-int")]
+    partial class stringtoint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,36 +227,6 @@ namespace PartyGuide.DataAccess.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PartyGuide.DataAccess.Data.RatingTable", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("RatingTables");
-                });
-
             modelBuilder.Entity("PartyGuide.DataAccess.Data.ServiceTable", b =>
                 {
                     b.Property<int>("Id")
@@ -267,21 +240,13 @@ namespace PartyGuide.DataAccess.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("CATEGORY");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("CREATED_BY");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("DESCRIPTION");
 
                     b.Property<int?>("EndPriceRange")
                         .HasColumnType("int")
-                        .HasColumnName("END_PRICE_RANGE");
-
-                    b.Property<string>("ExtendedDescription")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("EXTENDED_DESCRIPTION");
+                        .HasColumnName("ENDPRICERANGE");
 
                     b.Property<byte[]>("Image")
                         .HasColumnType("varbinary(max)")
@@ -293,11 +258,11 @@ namespace PartyGuide.DataAccess.Data.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("PHONE_NUMBER");
+                        .HasColumnName("PHONENUMBER");
 
                     b.Property<int?>("StartPriceRange")
                         .HasColumnType("int")
-                        .HasColumnName("START_PRICE_RANGE");
+                        .HasColumnName("STARTPRICERANGE");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)")
@@ -357,22 +322,6 @@ namespace PartyGuide.DataAccess.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("PartyGuide.DataAccess.Data.RatingTable", b =>
-                {
-                    b.HasOne("PartyGuide.DataAccess.Data.ServiceTable", "Service")
-                        .WithMany("Ratings")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("PartyGuide.DataAccess.Data.ServiceTable", b =>
-                {
-                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

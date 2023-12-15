@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PartyGuide.DataAccess.Data;
+using PartyGuide.DataAccess.DbContext;
 
 #nullable disable
 
 namespace PartyGuide.DataAccess.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231215154930_rating-system-3")]
-    partial class ratingsystem3
+    [Migration("20231215155919_rating-system-4")]
+    partial class ratingsystem4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

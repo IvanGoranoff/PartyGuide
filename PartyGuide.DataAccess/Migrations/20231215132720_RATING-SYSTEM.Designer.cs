@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PartyGuide.DataAccess.Data;
+using PartyGuide.DataAccess.DbContext;
 
 #nullable disable
 
 namespace PartyGuide.DataAccess.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231215155919_rating-system-4")]
-    partial class ratingsystem4
+    [Migration("20231215132720_RATING-SYSTEM")]
+    partial class RATINGSYSTEM
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,36 +227,6 @@ namespace PartyGuide.DataAccess.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PartyGuide.DataAccess.Data.RatingTable", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("RatingTables");
-                });
-
             modelBuilder.Entity("PartyGuide.DataAccess.Data.ServiceTable", b =>
                 {
                     b.Property<int>("Id")
@@ -294,9 +264,17 @@ namespace PartyGuide.DataAccess.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("LOCATION");
 
+                    b.Property<int>("NumberOfRatings")
+                        .HasColumnType("int")
+                        .HasColumnName("NUMBER_OF_RATINGS");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("PHONE_NUMBER");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float")
+                        .HasColumnName("RATING");
 
                     b.Property<int?>("StartPriceRange")
                         .HasColumnType("int")
@@ -360,22 +338,6 @@ namespace PartyGuide.DataAccess.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("PartyGuide.DataAccess.Data.RatingTable", b =>
-                {
-                    b.HasOne("PartyGuide.DataAccess.Data.ServiceTable", "Service")
-                        .WithMany("Ratings")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("PartyGuide.DataAccess.Data.ServiceTable", b =>
-                {
-                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

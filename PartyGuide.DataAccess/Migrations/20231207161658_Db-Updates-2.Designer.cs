@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PartyGuide.DataAccess.Data;
+using PartyGuide.DataAccess.DbContext;
 
 #nullable disable
 
 namespace PartyGuide.DataAccess.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231207192638_string-to-int")]
-    partial class stringtoint
+    [Migration("20231207161658_Db-Updates-2")]
+    partial class DbUpdates2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -244,8 +244,8 @@ namespace PartyGuide.DataAccess.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("DESCRIPTION");
 
-                    b.Property<int?>("EndPriceRange")
-                        .HasColumnType("int")
+                    b.Property<string>("EndPriceRange")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("ENDPRICERANGE");
 
                     b.Property<byte[]>("Image")
@@ -260,8 +260,8 @@ namespace PartyGuide.DataAccess.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("PHONENUMBER");
 
-                    b.Property<int?>("StartPriceRange")
-                        .HasColumnType("int")
+                    b.Property<string>("StartPriceRange")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("STARTPRICERANGE");
 
                     b.Property<string>("Title")

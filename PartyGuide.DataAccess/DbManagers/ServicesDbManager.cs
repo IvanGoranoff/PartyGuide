@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PartyGuide.Common;
 using PartyGuide.DataAccess.Data;
+using PartyGuide.DataAccess.DbContext;
 using PartyGuide.DataAccess.Interfaces;
 
 namespace PartyGuide.DataAccess.DbManagers
 {
-	public class ServiceDbManager : IServiceDbManager
+    public class ServiceDbManager : IServiceDbManager
 	{
 		private readonly ApplicationDbContext dbContext;
 

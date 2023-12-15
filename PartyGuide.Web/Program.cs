@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using PartyGuide.DataAccess.Data;
+using PartyGuide.DataAccess.DbContext;
 using PartyGuide.DataAccess.DbManagers;
 using PartyGuide.DataAccess.Interfaces;
 using PartyGuide.Domain.Interfaces;

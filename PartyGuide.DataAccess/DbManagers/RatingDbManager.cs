@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PartyGuide.DataAccess.Data;
+using PartyGuide.DataAccess.DbContext;
 using PartyGuide.DataAccess.Interfaces;
 
 namespace PartyGuide.DataAccess.DbManagers

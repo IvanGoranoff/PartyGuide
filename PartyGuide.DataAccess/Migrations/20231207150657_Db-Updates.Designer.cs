@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PartyGuide.DataAccess.Data;
+using PartyGuide.DataAccess.DbContext;
 
 #nullable disable
 
 namespace PartyGuide.DataAccess.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231215132720_RATING-SYSTEM")]
-    partial class RATINGSYSTEM
+    [Migration("20231207150657_Db-Updates")]
+    partial class DbUpdates
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -235,54 +235,6 @@ namespace PartyGuide.DataAccess.Data.Migrations
                         .HasColumnName("ID");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Category")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("CATEGORY");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("CREATED_BY");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DESCRIPTION");
-
-                    b.Property<int?>("EndPriceRange")
-                        .HasColumnType("int")
-                        .HasColumnName("END_PRICE_RANGE");
-
-                    b.Property<string>("ExtendedDescription")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("EXTENDED_DESCRIPTION");
-
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("IMAGE");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("LOCATION");
-
-                    b.Property<int>("NumberOfRatings")
-                        .HasColumnType("int")
-                        .HasColumnName("NUMBER_OF_RATINGS");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("PHONE_NUMBER");
-
-                    b.Property<double>("Rating")
-                        .HasColumnType("float")
-                        .HasColumnName("RATING");
-
-                    b.Property<int?>("StartPriceRange")
-                        .HasColumnType("int")
-                        .HasColumnName("START_PRICE_RANGE");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("TITLE");
 
                     b.HasKey("Id");
 

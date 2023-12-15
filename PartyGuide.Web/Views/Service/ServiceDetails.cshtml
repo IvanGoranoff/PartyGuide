@@ -25,6 +25,7 @@
 				</div>
 			</div>
 		</div>
+		<input asp-for="@Model.Id" id="service-id" type="hidden" value="@Model.Id" />
 
 		<!-- Additional Information and Contact the Seller Panels (right side) -->
 		<div class="col-md-4">
@@ -58,21 +59,6 @@
 					<div id="google-meet" style="height: 300px;"></div>
 				</div>
 			</div>
-
-			<!-- Ratings Panel (right side) -->
-
-			<form id="ratingForm" data-service-id="@Model.Id">
-				<input type="hidden" name="serviceId" value="@Model.Id" />
-				<label for="rating">Rate this service:</label>
-				<select name="rating" id="rating">
-					<option value="1">1 star</option>
-					<option value="2">2 stars</option>
-					<option value="3">3 stars</option>
-					<option value="4">4 stars</option>
-					<option value="5">5 stars</option>
-				</select>
-				@*<button type="button" id="submitRating">Submit</button>*@
-			</form>
 		</div>
 	</div>
 </div>
@@ -88,11 +74,11 @@
 			<div class="mb-3">
 				<h5 class="card-title">Rate this Service</h5>
 				<div class="rating">
-					<input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"></label>
-					<input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"></label>
-					<input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"></label>
-					<input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"></label>
-					<input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"></label>
+					<input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"><i class="fas fa-star"></i></label>
+					<input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"><i class="fas fa-star"></i></label>
+					<input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"><i class="fas fa-star"></i></label>
+					<input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"><i class="fas fa-star"></i></label>
+					<input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"><i class="fas fa-star"></i></label>
 				</div>
 			</div>
 			<!-- Input Field -->
@@ -133,7 +119,7 @@
 										Rating:
 										@for (int i = 1; i <= 5; i++)
 										{
-											<span class="fa fa-star @(i <= averageRating ? "checked" : "")"></span>
+											<span class="fa fa-star @(i <= review.Rating ? "checked" : "")"></span>
 										}
 									</p>
 									<p class="card-text">Comment: @review.Comment</p>
@@ -152,17 +138,27 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
 <script>
 	$(document).ready(function () {
-		$("#submitRating").on("click", function () {
-			var serviceId = $("#ratingForm").data("service-id");
-			var ratingValue = $("#rating").val();
 
+		var serviceId = @Model.Id;
+
+		$(".rating label").on("click", function () {
+			// Uncheck all stars
+			$(".rating input").prop("checked", false);
+			// Check stars up to the clicked one
+			$(this).prevAll("input").prop("checked", true);
+		});
+
+		$("#submitRating").on("click", function () {
+			var ratingValue = $(".rating input:checked").val();  // Corrected line
+			var commentValue = $("#comment").val();
+
+			// Use AJAX to submit the rating and comment
 			$.ajax({
 				url: "@Url.Action("RateService", "Service")",
 				method: "POST",
-				data: { serviceId: serviceId, rating: ratingValue },
+				data: { serviceId: serviceId, rating: ratingValue, comment: commentValue },
 				success: function (data) {
 					if (data.success) {
 						// Update the rating container with the new rating

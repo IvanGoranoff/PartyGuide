@@ -164,7 +164,7 @@ namespace PartyGuide.Web.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> RateService(int serviceId, int rating)
+		public async Task<ActionResult> RateService(int serviceId, int rating, string comment)
 		{
 			try
 			{
@@ -186,7 +186,7 @@ namespace PartyGuide.Web.Controllers
 				}
 
 				// Add the service rating
-				await ratingManager.AddNewRating(serviceId, userId, rating, string.Empty);
+				await ratingManager.AddNewRating(serviceId, userId, rating, comment);
 
 				// Return success message
 				return Json(new { success = true });

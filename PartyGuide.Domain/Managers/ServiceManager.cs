@@ -6,36 +6,36 @@ using PartyGuide.Domain.Models;
 
 namespace PartyGuide.Domain.Managers
 {
-    public class ServiceManager : IServiceManager
-    {
-        private readonly IServiceDbManager serviceDbManager;
-        AdapterDomain adapter;
+	public class ServiceManager : IServiceManager
+	{
+		private readonly IServiceDbManager serviceDbManager;
+		AdapterDomain adapter;
 
-        public ServiceManager(IServiceDbManager serviceDbManager)
-        {
-            this.serviceDbManager = serviceDbManager;
-            adapter = new AdapterDomain();
-        }
+		public ServiceManager(IServiceDbManager serviceDbManager)
+		{
+			this.serviceDbManager = serviceDbManager;
+			adapter = new AdapterDomain();
+		}
 
-        public async Task AddNewService(ServiceModel serviceModel)
-        {
-            var table = adapter.TransformModelToTable(serviceModel);
+		public async Task AddNewService(ServiceModel serviceModel)
+		{
+			var table = adapter.TransformModelToTable(serviceModel);
 
-            await serviceDbManager.AddNewService(table);
-        }
+			await serviceDbManager.AddNewService(table);
+		}
 
 		public async Task DeleteService(int? id)
 		{
-            await serviceDbManager.DeleteService(id);
+			await serviceDbManager.DeleteService(id);
 
 		}
 
 		public async Task<List<ServiceModel>> GetAllServicesAsync()
-        {
-            var tables = await serviceDbManager.GetAllServicesAsync();
+		{
+			var tables = await serviceDbManager.GetAllServicesAsync();
 
-            return adapter.TransformTablesToModelsList(tables);
-        }
+			return adapter.TransformTablesToModelsList(tables);
+		}
 
 		public async Task<List<ServiceModel>> GetAllServicesByUserAsync(string? currentUser)
 		{
@@ -45,17 +45,24 @@ namespace PartyGuide.Domain.Managers
 		}
 
 		public async Task<ServiceModel> GetServiceByIdAsync(int? id)
-        {
-            var table = await serviceDbManager.GetServiceByIdAsync(id);
+		{
+			var table = await serviceDbManager.GetServiceByIdAsync(id);
 
-            return adapter.TransformTableToModel(table);
-        }
+			return adapter.TransformTableToModel(table);
+		}
 
-        public async Task<List<ServiceModel>> GetServiceTablesFilterAsync(string category, string title, string startPriceRange, string endPriceRange, string location)
-        {
-            var tables = await serviceDbManager.GetServiceTablesFilterAsync(category, title, startPriceRange, endPriceRange, location);
+		public async Task<List<ServiceModel>> GetServiceModelsFilterAsync(SearchModel model)
+		{
+			var tables = await serviceDbManager.GetServiceTablesFilterAsync(model.Category, model.Title, model.StartPrice, model.EndPrice, model.Location);
 
-            return adapter.TransformTablesToModelsList(tables);
-        }
-    }
+			return adapter.TransformTablesToModelsList(tables);
+		}
+
+		public async Task UpdateServiceRating(int serviceId, int rating)
+		{
+			await serviceDbManager.UpdateServiceRating(serviceId, rating);
+
+		}
+
+	}
 }

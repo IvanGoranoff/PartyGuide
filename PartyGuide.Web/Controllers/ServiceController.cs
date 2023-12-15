@@ -1,7 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using PartyGuide.Domain.Interfaces;
 using PartyGuide.Domain.Models;
+using PartyGuide.Infrastructure.Models.GeoNames;
+using PartyGuide.Infrastructure.Services.GeoNames;
+using PartyGuide.Web.Helpers;
 using PartyGuide.Web.Models;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -12,20 +17,40 @@ namespace PartyGuide.Web.Controllers
 	{
 		private readonly ILogger<ServiceController> _logger;
 		private readonly IServiceManager serviceManager;
+		private readonly IGeoNamesService geoNamesService;
 
-		public ServiceController(ILogger<ServiceController> logger, IServiceManager serviceManager)
+		public ServiceController(ILogger<ServiceController> logger, IServiceManager serviceManager, IGeoNamesService geoNamesService)
 		{
 			_logger = logger;
 			this.serviceManager = serviceManager;
+			this.geoNamesService = geoNamesService;
 		}
 
 		public async Task<IActionResult> Index()
 		{
-			var models = await serviceManager.GetAllServicesAsync();
+			var model = new SearchModel();
+
+			List<City> cities = geoNamesService.GetCitiesInBulgaria();
+			ViewBag.Cities = SelectListItemHelper.CreateAllCitiesSelectList(cities);
+
+			model.Services = await serviceManager.GetAllServicesAsync();
 
 			ViewBag.SuccessMessage = TempData["SuccessMessage"] as string;
 
-			return View(models);
+			return View(model);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Index(SearchModel model)
+		{
+			List<City> cities = geoNamesService.GetCitiesInBulgaria();
+			ViewBag.Cities = SelectListItemHelper.CreateAllCitiesSelectList(cities);
+
+			model.Services = await serviceManager.GetServiceModelsFilterAsync(model);
+
+			ViewBag.SuccessMessage = TempData["SuccessMessage"] as string;
+
+			return View(model);
 		}
 
 		public async Task<IActionResult> ServiceDetails(int? id)
@@ -39,6 +64,9 @@ namespace PartyGuide.Web.Controllers
 		[HttpGet]
 		public IActionResult AddNewService()
 		{
+			List<City> cities = geoNamesService.GetCitiesInBulgaria();
+			ViewBag.Cities = SelectListItemHelper.CreateOnlyCitiesSelectList(cities);
+
 			return View();
 		}
 
@@ -50,15 +78,19 @@ namespace PartyGuide.Web.Controllers
 			{
 				return View(model);
 			}
+
+			List<City> cities = geoNamesService.GetCitiesInBulgaria();
+			ViewBag.Cities = SelectListItemHelper.CreateOnlyCitiesSelectList(cities);
+
 			model.CreatedBy = User.FindFirst(ClaimTypes.Email)?.Value;
 
 			// Exclude Image property from validation
 			ModelState.Remove("imageFile");
 
-			//if (!ModelState.IsValid)
-			//         {
-			//             return View();
-			//         }
+			if (!ModelState.IsValid)
+			{
+				return View();
+			}
 			try
 			{
 				if (imageFile != null && imageFile.Length > 0)
@@ -123,6 +155,24 @@ namespace PartyGuide.Web.Controllers
 			}
 
 			return RedirectToAction("ManageServices");
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> RateService(int serviceId, int rating)
+		{
+			try
+			{
+				// Update the service rating
+				await serviceManager.UpdateServiceRating(serviceId, rating);
+
+				// Return success message
+				return Json(new { success = true });
+			}
+			catch (Exception ex)
+			{
+				// Return error message
+				return Json(new { success = false, errorMessage = ex.Message });
+			}
 		}
 
 		public async Task<List<ServiceModel>> GetAllServices()

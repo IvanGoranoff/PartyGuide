@@ -6,6 +6,7 @@ using PartyGuide.DataAccess.DbManagers;
 using PartyGuide.DataAccess.Interfaces;
 using PartyGuide.Domain.Interfaces;
 using PartyGuide.Domain.Managers;
+using PartyGuide.Infrastructure.Services.GeoNames;
 
 internal class Program
 {
@@ -26,6 +27,7 @@ internal class Program
 
 		builder.Services.AddScoped<IServiceManager, ServiceManager>();
 		builder.Services.AddScoped<IServiceDbManager, ServiceDbManager>();
+		builder.Services.AddScoped<IGeoNamesService, GeoNamesService>();
 
 		//builder.Services.AddAuthentication(options =>
 		//{

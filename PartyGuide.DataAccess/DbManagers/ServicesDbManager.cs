@@ -1,22 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PartyGuide.Common;
 using PartyGuide.DataAccess.Data;
 using PartyGuide.DataAccess.Interfaces;
 
 namespace PartyGuide.DataAccess.DbManagers
 {
-    public class ServiceDbManager : IServiceDbManager
-    {
-        private readonly ApplicationDbContext dbContext;
+	public class ServiceDbManager : IServiceDbManager
+	{
+		private readonly ApplicationDbContext dbContext;
 
-        public ServiceDbManager(ApplicationDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
+		public ServiceDbManager(ApplicationDbContext dbContext)
+		{
+			this.dbContext = dbContext;
+		}
 
-        public async Task<ServiceTable> GetServiceByIdAsync(int? id)
-        {
-            return await dbContext.ServiceTables.Where(s => s.Id == id).FirstOrDefaultAsync();
-        }
+		public async Task<ServiceTable> GetServiceByIdAsync(int? id)
+		{
+			return await dbContext.ServiceTables.Where(s => s.Id == id).FirstOrDefaultAsync();
+		}
 
 		public async Task<List<ServiceTable>> GetAllServicesAsync()
 		{
@@ -24,59 +25,70 @@ namespace PartyGuide.DataAccess.DbManagers
 
 		}
 
-        public async Task<List<ServiceTable>> GetAllServicesByUserAsync(string currentUser)
-        {
-            return await dbContext.ServiceTables.Where(x => x.CreatedBy == currentUser).ToListAsync();
-        }
+		public async Task<List<ServiceTable>> GetAllServicesByUserAsync(string currentUser)
+		{
+			return await dbContext.ServiceTables.Where(x => x.CreatedBy == currentUser).ToListAsync();
+		}
 
-        public async Task<List<ServiceTable>> GetServiceTablesFilterAsync(string category,
-                                                                          string title,
-                                                                          string startPriceRange,
-                                                                          string endPriceRange,
-                                                                          string location)
-        {
-            string query = $"SELECT * from ServiceTable t WHERE";
+		public async Task<List<ServiceTable>> GetServiceTablesFilterAsync(string category,
+																		  string title,
+																		  int? startPriceRange,
+																		  int? endPriceRange,
+																		  string location)
+		{
+			string query = $"SELECT * from ServiceTable t WHERE ";
 
-            if (!string.IsNullOrEmpty(category))
-            {
-                query += $"t.CATEGORY = '{category}'";
-            }
+			query += $"t.START_PRICE_RANGE >= {startPriceRange.Value} ";
 
-            if (!string.IsNullOrEmpty(title))
-            {
-                query += $"t.TITLE = '{title}'";
-            }
+			query += $"AND t.END_PRICE_RANGE <= {endPriceRange.Value} ";
 
-            if (!string.IsNullOrEmpty(startPriceRange))
-            {
-                query += $"t.STARTPRICERANGE = '{startPriceRange}'";
-            }
+			if (!string.IsNullOrEmpty(category))
+			{
+				query += $"AND t.CATEGORY = '{category}' ";
+			}
 
-            if (!string.IsNullOrEmpty(endPriceRange))
-            {
-                query += $"t.ENDPRICERANGE = '{endPriceRange}'";
-            }
+			if (!string.IsNullOrEmpty(title))
+			{
+				query += $"AND t.TITLE LIKE '%{title}%' ";
+			}
 
-            if (!string.IsNullOrEmpty(location))
-            {
-                query += $"t.LOCATION = '{location}'";
-            }
+			if (!string.IsNullOrEmpty(location))
+			{
+				if (location != CommonNomenclature.All)
+				{
+					query += $"AND t.LOCATION = '{location}' ";
 
-            return await dbContext.ServiceTables.FromSqlRaw(query).ToListAsync();
-        }
+				}
+			}
 
-        public async Task AddNewService(ServiceTable serviceTable)
-        {
-            await dbContext.ServiceTables.AddAsync(serviceTable);
+			return await dbContext.ServiceTables.FromSqlRaw(query).ToListAsync();
+		}
 
-            await dbContext.SaveChangesAsync();
-        }
+		public async Task AddNewService(ServiceTable serviceTable)
+		{
+			await dbContext.ServiceTables.AddAsync(serviceTable);
+
+			await dbContext.SaveChangesAsync();
+		}
 
 		public async Task DeleteService(int? id)
 		{
 			var table = await dbContext.ServiceTables.Where(s => s.Id == id).FirstOrDefaultAsync();
 
-		    dbContext.ServiceTables.Remove(table);
+			dbContext.ServiceTables.Remove(table);
+
+			await dbContext.SaveChangesAsync();
+		}
+
+		public async Task UpdateServiceRating(int serviceId, int rating)
+		{
+			var table = await dbContext.ServiceTables.FirstOrDefaultAsync(s => s.Id == serviceId);
+
+			// Update the rating properties
+			table.Rating = (table.Rating * table.NumberOfRatings + rating) / (table.NumberOfRatings + 1);
+			table.NumberOfRatings++;
+
+			dbContext.Update(table);
 
 			await dbContext.SaveChangesAsync();
 		}

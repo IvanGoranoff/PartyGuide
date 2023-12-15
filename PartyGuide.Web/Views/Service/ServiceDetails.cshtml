@@ -58,10 +58,38 @@
 					<div id="google-meet" style="height: 300px;"></div>
 				</div>
 			</div>
+
+			<!-- Ratings Panel (right side) -->
+
+			<form id="ratingForm" data-service-id="@Model.Id">
+				<input type="hidden" name="serviceId" value="@Model.Id" />
+				<label for="rating">Rate this service:</label>
+				<select name="rating" id="rating">
+					<option value="1">1 star</option>
+					<option value="2">2 stars</option>
+					<option value="3">3 stars</option>
+					<option value="4">4 stars</option>
+					<option value="5">5 stars</option>
+				</select>
+				<button type="button" id="submitRating">Submit</button>
+			</form>
+
+			<div id="ratingContainer">
+				<div class="rating">
+					@for (int i = 1; i <= 5; i++)
+					{
+						<span class="fa-@(i <= Model.Rating ? "solid" : "regular") fa-star"></span>
+					}
+					<span>(@Model.NumberOfRatings reviews)</span>
+				</div>
+			</div>
+
+
+
 		</div>
 	</div>
 </div>
-
+@*
 <!-- JavaScript for Google Calendar integration -->
 <script src="https://apis.google.com/js/api.js"></script>
 <script>
@@ -109,4 +137,33 @@
 			},
 		});
 	}
+</script>*@
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+	$(document).ready(function () {
+		$("#submitRating").on("click", function () {
+			var serviceId = $("#ratingForm").data("service-id");
+			var ratingValue = $("#rating").val();
+
+			$.ajax({
+				url: "@Url.Action("RateService", "Service")",
+				method: "POST",
+				data: { serviceId: serviceId, rating: ratingValue },
+				success: function (data) {
+					if (data.success) {
+						// Update the rating container with the new rating
+						$("#ratingContainer").html("Rating submitted successfully!");
+					} else {
+						// Display error message
+						alert("Error: " + data.errorMessage);
+					}
+				},
+				error: function () {
+					// Handle errors
+					alert("An error occurred while submitting the rating.");
+				}
+			});
+		});
+	});
 </script>

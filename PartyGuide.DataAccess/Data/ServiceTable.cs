@@ -44,5 +44,11 @@ namespace PartyGuide.DataAccess.Data
 
 		[Column("CREATED_BY")]
 		public string CreatedBy { get; set; }
+
+		[Column("RATING")]
+		public double Rating { get; set; }
+
+		[Column("NUMBER_OF_RATINGS")]
+		public int NumberOfRatings { get; set; }
 	}
 }

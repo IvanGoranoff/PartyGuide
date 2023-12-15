@@ -4,7 +4,7 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-@model List<ServiceModel>
+@model SearchModel
 
 @{
 	ViewData["Title"] = "Service Catalog";
@@ -21,7 +21,7 @@
 <button class="btn btn-primary mb-3" id="filterToggleBtn">Toggle Filters</button>
 
 <!-- Add a collapsible form for filtering -->
-<form method="get" action="@Url.Action("Index", "Service")" class="mb-4" id="filterForm" style="display: none;">
+<form method="post" action="@Url.Action("Index", "Service")" class="mb-4" id="filterForm" style="display: none;">
 	<div class="card border-primary mb-12">
 		<div class="card-header">Search</div>
 		<div class="card-body text-primary">
@@ -32,19 +32,19 @@
 						<label for="startPrice">Start Price</label>
 						<input type="text" id="startPriceValue" readonly style="border:0; color:#f6931f; font-weight:bold;">
 						<div id="startPriceSlider"></div>
-						<input type="hidden" name="startPrice" id="startPrice" />
+						<input type="hidden" name="startPrice" asp-for="StartPrice" id="startPrice" />
 					</div>
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="category">Category</label>
-						<input type="text" name="category" id="category" class="form-control" />
+						<input type="text" name="category" asp-for="Category" id="category" class="form-control" />
 					</div>
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="title">Title</label>
-						<input type="text" name="title" id="title" class="form-control" />
+						<input type="text" name="title" id="title"asp-for="Title" class="form-control" />
 					</div>
 				</div>
 			</div>
@@ -54,14 +54,15 @@
 						<label for="endPrice">End Price</label>
 						<input type="text" id="endPriceValue" readonly style="border:0; color:#f6931f; font-weight:bold;">
 						<div id="endPriceSlider"></div>
-						<input type="hidden" name="endPrice" id="endPrice" />
+						<input type="hidden" name="endPrice" asp-for="EndPrice" id="endPrice" />
 					</div>
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="location">Location</label>
-						<input type="text" name="location" id="location" class="form-control" />
+						<select asp-for="Location" asp-items="@ViewBag.Cities" id="location" class="form-control"></select>
 					</div>
+
 				</div>
 				<div class="col-md-3">
 					<div class="form-group mt-4">
@@ -73,23 +74,14 @@
 	</div>
 </form>
 
-@if (Model.Count == 0)
+@if (Model.Services.Count == 0)
 {
-	<div class="d-flex align-items-center" style="height: 60vh;">
-		<div class="container">
-			<h1 class="text-center mb-3">There are no services at the moment</h1>
-			<h2 class="text-center mb-3">Create the first one!</h2>
-			<div class="d-flex justify-content-center mt-3">
-				<button class="btn-lg btn-success btn-shadow" onclick="location.href='/Service/AddNewService'">Add a service!</button>
-			</div>
-		</div>
-	</div>
-
+	@Html.Partial("_NoAvailableServicesPartial")
 }
 
 <div class="container mt-5">
 	<div class="row">
-		@foreach (var service in Model)
+		@foreach (var service in Model.Services)
 		{
 			<div class="col-md-4 mb-4">
 				<div class="card">
@@ -108,6 +100,13 @@
 						{
 							<a href="@Url.Action("ServiceDetails", "Service", new { id = service.Id })" class="btn btn-primary">Details</a>
 						}
+						<div class="rating">
+							@for (int i = 1; i <= 5; i++)
+							{
+								<span class="fa-@(i <= service.Rating ? "solid" : "regular") fa-star"></span>
+							}
+							<span>(@service.NumberOfRatings reviews)</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -116,7 +115,7 @@
 </div>
 
 @section scripts {
-	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/vader/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -150,7 +149,7 @@
 
 			// Initialize the endPrice slider
 			$("#endPriceSlider").slider({
-				range: "min",
+				range: "max",
 				value: 1000,
 				min: 0,
 				max: 1000,

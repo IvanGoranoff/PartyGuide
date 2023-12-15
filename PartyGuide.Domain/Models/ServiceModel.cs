@@ -40,11 +40,12 @@ namespace PartyGuide.Domain.Models
 		ErrorMessage = "Value for {0} must be between {1} and {2}.")]
 		public int? EndPriceRange { get; set; }
 
+		public string? Location { get; set; }
 
-		[Required(ErrorMessage = "Field Required")]
-		[RegularExpression(@"^.{3,}$", ErrorMessage = "Location is to short")]
-		public string Location { get; set; }
+		public string? CreatedBy { get; set; }
 
-		public string CreatedBy { get; set; }
-    }
+        public double Rating { get; set; }
+
+		public int NumberOfRatings { get; set; }
+	}
 }

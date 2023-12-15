@@ -261,9 +261,17 @@ namespace PartyGuide.DataAccess.Data.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("LOCATION");
 
+                    b.Property<int>("NumberOfRatings")
+                        .HasColumnType("int")
+                        .HasColumnName("NUMBER_OF_RATINGS");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("PHONE_NUMBER");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float")
+                        .HasColumnName("RATING");
 
                     b.Property<int?>("StartPriceRange")
                         .HasColumnType("int")

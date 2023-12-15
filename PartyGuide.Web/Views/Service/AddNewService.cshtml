@@ -83,8 +83,8 @@
 
 						<div class="mb-3">
 							<label class="form-label">Location</label>
-							<input id="Location" asp-for="Location" class="form-control" placeholder="Enter your service's whereabouts" />
-							@Html.ValidationMessageFor(m => m.Location, "", new {@class = "validation-message"})
+							<select asp-for="Location" asp-items="@ViewBag.Cities" id="Location" class="form-control"></select>
+							@*<input id="Location" asp-for="Location" class="form-control" placeholder="Enter your service's whereabouts" />*@
 						</div>
 
 						<button type="submit" class="btn btn-primary">Create</button>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Hosting;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -45,10 +46,6 @@ namespace PartyGuide.DataAccess.Data
 		[Column("CREATED_BY")]
 		public string CreatedBy { get; set; }
 
-		[Column("RATING")]
-		public double Rating { get; set; }
-
-		[Column("NUMBER_OF_RATINGS")]
-		public int NumberOfRatings { get; set; }
+		public ICollection<RatingTable> Ratings { get; } = new List<RatingTable>();
 	}
 }

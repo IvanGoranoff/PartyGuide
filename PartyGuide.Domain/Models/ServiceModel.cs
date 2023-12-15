@@ -1,17 +1,18 @@
-﻿using System.ComponentModel;
+﻿using PartyGuide.DataAccess.Data;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace PartyGuide.Domain.Models
 {
-    public class ServiceModel
-    {
-        public int Id { get; set; }
+	public class ServiceModel
+	{
+		public int Id { get; set; }
 
-        public string Category { get; set; }
+		public string Category { get; set; }
 
-        [Required(ErrorMessage = "Field Required")]
-        [RegularExpression(@"^.{5,40}$", ErrorMessage = "Title must be between 5 and 40 characters")]
-        public string Title { get; set; }
+		[Required(ErrorMessage = "Field Required")]
+		[RegularExpression(@"^.{5,40}$", ErrorMessage = "Title must be between 5 and 40 characters")]
+		public string Title { get; set; }
 
 		[Required(ErrorMessage = "Field Required")]
 		[RegularExpression(@"^.{5,300}$", ErrorMessage = "Description must be between 5 and 300 characters")]
@@ -44,8 +45,6 @@ namespace PartyGuide.Domain.Models
 
 		public string? CreatedBy { get; set; }
 
-        public double Rating { get; set; }
-
-		public int NumberOfRatings { get; set; }
+		public ICollection<RatingTable> Ratings { get; set; }
 	}
 }

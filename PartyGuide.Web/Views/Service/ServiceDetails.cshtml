@@ -71,73 +71,86 @@
 					<option value="4">4 stars</option>
 					<option value="5">5 stars</option>
 				</select>
-				<button type="button" id="submitRating">Submit</button>
+				@*<button type="button" id="submitRating">Submit</button>*@
 			</form>
-
-			<div id="ratingContainer">
-				<div class="rating">
-					@for (int i = 1; i <= 5; i++)
-					{
-						<span class="fa-@(i <= Model.Rating ? "solid" : "regular") fa-star"></span>
-					}
-					<span>(@Model.NumberOfRatings reviews)</span>
-				</div>
-			</div>
-
-
-
 		</div>
 	</div>
 </div>
-@*
-<!-- JavaScript for Google Calendar integration -->
-<script src="https://apis.google.com/js/api.js"></script>
-<script>
-	gapi.load('client', initGoogleCalendar);
 
-	function initGoogleCalendar() {
-		gapi.client.init({
-			apiKey: 'AIzaSyBftVk0QXMzgqkVf5NNU8QBY0-mTQXo-JM', // Replace with your API key
-			discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
-		}).then(function () {
-			// Fetch available days from the Google Calendar API
-			fetchAvailableDays();
-		});
-	}
+<div class="container mt-5">
+	<!-- Add a Service Card -->
+	<div class="card">
+		<div class="card-header">
+			Add a Service
+		</div>
+		<div class="card-body">
+			<!-- Star Rating Section -->
+			<div class="mb-3">
+				<h5 class="card-title">Rate this Service</h5>
+				<div class="rating">
+					<input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="5 stars"></label>
+					<input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="4 stars"></label>
+					<input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="3 stars"></label>
+					<input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="2 stars"></label>
+					<input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="1 star"></label>
+				</div>
+			</div>
+			<!-- Input Field -->
+			<div class="mb-3">
+				<label for="comment" class="form-label">Comment:</label>
+				<input type="text" class="form-control" id="comment" placeholder="Add your comment..." />
+			</div>
+			<!-- Submit Button -->
+			<button type="button" id="submitRating" class="btn btn-primary float-end">Submit</button>
+		</div>
+	</div>
+	<!-- Reviews List Card -->
+	<div class="card mt-4">
+		<div class="card-header">
+			Service Reviews
+		</div>
+		<div class="card-body">
+			<div class="rating">
+				@if (Model.Ratings != null && Model.Ratings.Any())
+				{
+					var averageRating = Model.Ratings.Average(r => r.Rating);
+					for (int i = 1; i <= 5; i++)
+					{
+						<span class="fa fa-star @(i <= averageRating ? "checked" : "")"></span>
+					}
+					<span>(@Model.Ratings.Count reviews)</span>
 
-	function fetchAvailableDays() {
-		// Implement logic to fetch available days from Google Calendar API
-		// Example: Make a request to the Google Calendar API using gapi.client.calendar.events.list
-		// and extract the available days.
+					<div class="individual-reviews mt-3">
+						<h5>Individual Reviews:</h5>
+						@foreach (var review in Model.Ratings)
+						{
+							<div class="card mb-3">
+								<div class="card-header">
+									Reviewer: @review.UserId
+								</div>
+								<div class="card-body">
+									<p class="card-text">
+										Rating:
+										@for (int i = 1; i <= 5; i++)
+										{
+											<span class="fa fa-star @(i <= averageRating ? "checked" : "")"></span>
+										}
+									</p>
+									<p class="card-text">Comment: @review.Comment</p>
+								</div>
+							</div>
+						}
+					</div>
+				}
+				else
+				{
+					<span>No reviews yet</span>
+				}
+			</div>
+		</div>
+	</div>
+</div>
 
-		// Dummy data for demonstration purposes
-		var availableDays = ["2023-12-20", "2023-12-22", "2023-12-25"];
-
-		// Render the Google Calendar using the available days
-		renderGoogleCalendar(availableDays);
-	}
-
-	function renderGoogleCalendar(availableDays) {
-		// Implement logic to render the Google Calendar using a JavaScript calendar library.
-		// Example: Use FullCalendar (https://fullcalendar.io/) to render the calendar.
-
-		// Dummy initialization for demonstration purposes
-		$('#googleCalendar').fullCalendar({
-			events: availableDays.map(function (day) {
-				return {
-					title: 'Available',
-					start: day,
-					allDay: true,
-				};
-			}),
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,agendaWeek,agendaDay',
-			},
-		});
-	}
-</script>*@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>

@@ -27,7 +27,6 @@ namespace PartyGuide.Domain.Managers
 		public async Task DeleteService(int? id)
 		{
 			await serviceDbManager.DeleteService(id);
-
 		}
 
 		public async Task<List<ServiceModel>> GetAllServicesAsync()
@@ -57,12 +56,5 @@ namespace PartyGuide.Domain.Managers
 
 			return adapter.TransformTablesToModelsList(tables);
 		}
-
-		public async Task UpdateServiceRating(int serviceId, int rating)
-		{
-			await serviceDbManager.UpdateServiceRating(serviceId, rating);
-
-		}
-
 	}
 }

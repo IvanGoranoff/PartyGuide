@@ -10,6 +10,5 @@ namespace PartyGuide.DataAccess.Interfaces
 		Task<List<ServiceTable>> GetAllServicesByUserAsync(string currentUser);
 		Task<ServiceTable> GetServiceByIdAsync(int? id);
         Task<List<ServiceTable>> GetServiceTablesFilterAsync(string category, string title, int? startPriceRange, int? endPriceRange, string location);
-		Task UpdateServiceRating(int serviceId, int rating);
 	}
 }

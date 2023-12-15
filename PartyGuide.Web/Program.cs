@@ -27,19 +27,9 @@ internal class Program
 
 		builder.Services.AddScoped<IServiceManager, ServiceManager>();
 		builder.Services.AddScoped<IServiceDbManager, ServiceDbManager>();
+		builder.Services.AddScoped<IRatingManager, RatingManager>();
+		builder.Services.AddScoped<IRatingDbManager, RatingDbManager>();
 		builder.Services.AddScoped<IGeoNamesService, GeoNamesService>();
-
-		//builder.Services.AddAuthentication(options =>
-		//{
-		//	options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-		//	options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-		//	options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-		//})
-		//	.AddCookie(options =>
-		//	{
-		//		options.LoginPath = "/Account/Login";
-		//		options.AccessDeniedPath = "/Account/AccessDenied";
-		//	});
 
 		builder.Services.ConfigureApplicationCookie(options =>
 		{

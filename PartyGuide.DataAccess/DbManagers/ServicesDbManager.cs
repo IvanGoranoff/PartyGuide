@@ -16,18 +16,18 @@ namespace PartyGuide.DataAccess.DbManagers
 
 		public async Task<ServiceTable> GetServiceByIdAsync(int? id)
 		{
-			return await dbContext.ServiceTables.Where(s => s.Id == id).FirstOrDefaultAsync();
+			return await dbContext.ServiceTables.Include(s => s.Ratings).Where(s => s.Id == id).FirstOrDefaultAsync();
 		}
 
 		public async Task<List<ServiceTable>> GetAllServicesAsync()
 		{
-			return await dbContext.ServiceTables.ToListAsync();
+			return await dbContext.ServiceTables.Include(s => s.Ratings).ToListAsync();
 
 		}
 
 		public async Task<List<ServiceTable>> GetAllServicesByUserAsync(string currentUser)
 		{
-			return await dbContext.ServiceTables.Where(x => x.CreatedBy == currentUser).ToListAsync();
+			return await dbContext.ServiceTables.Include(s => s.Ratings).Where(x => x.CreatedBy == currentUser).ToListAsync();
 		}
 
 		public async Task<List<ServiceTable>> GetServiceTablesFilterAsync(string category,
@@ -61,7 +61,7 @@ namespace PartyGuide.DataAccess.DbManagers
 				}
 			}
 
-			return await dbContext.ServiceTables.FromSqlRaw(query).ToListAsync();
+			return await dbContext.ServiceTables.FromSqlRaw(query).Include(s => s.Ratings).ToListAsync();
 		}
 
 		public async Task AddNewService(ServiceTable serviceTable)
@@ -76,19 +76,6 @@ namespace PartyGuide.DataAccess.DbManagers
 			var table = await dbContext.ServiceTables.Where(s => s.Id == id).FirstOrDefaultAsync();
 
 			dbContext.ServiceTables.Remove(table);
-
-			await dbContext.SaveChangesAsync();
-		}
-
-		public async Task UpdateServiceRating(int serviceId, int rating)
-		{
-			var table = await dbContext.ServiceTables.FirstOrDefaultAsync(s => s.Id == serviceId);
-
-			// Update the rating properties
-			table.Rating = (table.Rating * table.NumberOfRatings + rating) / (table.NumberOfRatings + 1);
-			table.NumberOfRatings++;
-
-			dbContext.Update(table);
 
 			await dbContext.SaveChangesAsync();
 		}

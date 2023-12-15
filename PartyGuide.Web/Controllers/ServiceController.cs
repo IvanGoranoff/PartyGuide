@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PartyGuide.DataAccess.Interfaces;
 using PartyGuide.Domain.Interfaces;
 using PartyGuide.Domain.Models;
 using PartyGuide.Infrastructure.Models.GeoNames;
@@ -17,12 +18,17 @@ namespace PartyGuide.Web.Controllers
 	{
 		private readonly ILogger<ServiceController> _logger;
 		private readonly IServiceManager serviceManager;
+		private readonly IRatingManager ratingManager;
 		private readonly IGeoNamesService geoNamesService;
 
-		public ServiceController(ILogger<ServiceController> logger, IServiceManager serviceManager, IGeoNamesService geoNamesService)
+		public ServiceController(ILogger<ServiceController> logger,
+							     IServiceManager serviceManager,
+							     IRatingManager ratingManager,
+							     IGeoNamesService geoNamesService)
 		{
 			_logger = logger;
 			this.serviceManager = serviceManager;
+			this.ratingManager = ratingManager;
 			this.geoNamesService = geoNamesService;
 		}
 
@@ -162,8 +168,25 @@ namespace PartyGuide.Web.Controllers
 		{
 			try
 			{
-				// Update the service rating
-				await serviceManager.UpdateServiceRating(serviceId, rating);
+				if (!User.Identity.IsAuthenticated)
+				{
+					return Json(new { success = false, errorMessage = "You have to be logged in to submit a review for this service." });
+				}
+
+				// Check if the user has already submitted a review
+				var userId = User.FindFirst(ClaimTypes.Email)?.Value; // Adjust based on your authentication setup
+
+				var existingReview = await ratingManager.CheckIfUserHasRatedServiceAsync(serviceId, userId);
+
+				if (existingReview)
+				{
+					// User has already submitted a review
+					// You can choose to update the existing review or reject the new submission
+					return Json(new { success = false, errorMessage = "You have already submitted a review for this service." });
+				}
+
+				// Add the service rating
+				await ratingManager.AddNewRating(serviceId, userId, rating, string.Empty);
 
 				// Return success message
 				return Json(new { success = true });

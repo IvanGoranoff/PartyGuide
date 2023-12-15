@@ -19,9 +19,7 @@ namespace PartyGuide.Domain.Adapters
 				PhoneNumber = model.PhoneNumber,
 				StartPriceRange = model.StartPriceRange,
 				Title = model.Title,
-				CreatedBy = model.CreatedBy,
-				Rating = model.Rating,
-				NumberOfRatings = model.NumberOfRatings,
+				CreatedBy = model.CreatedBy
 			};
 		}
 
@@ -40,8 +38,7 @@ namespace PartyGuide.Domain.Adapters
 				StartPriceRange = table.StartPriceRange,
 				Title = table.Title,
 				CreatedBy = table.CreatedBy,
-				Rating = table.Rating,
-				NumberOfRatings	= table.NumberOfRatings,
+				Ratings = table.Ratings
 			};
 		}
 
@@ -61,8 +58,7 @@ namespace PartyGuide.Domain.Adapters
 				StartPriceRange = table.StartPriceRange,
 				Title = table.Title,
 				CreatedBy = table.CreatedBy,
-				Rating= table.Rating,
-				NumberOfRatings= table.NumberOfRatings,
+				Ratings = table.Ratings
 			});
 
 			return models.ToList();

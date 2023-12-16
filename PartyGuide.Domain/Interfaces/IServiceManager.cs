@@ -10,6 +10,5 @@ namespace PartyGuide.Domain.Interfaces
 		Task<List<ServiceModel>> GetAllServicesByUserAsync(string? currentUser);
 		Task<ServiceModel> GetServiceByIdAsync(int? id);
         Task<List<ServiceModel>> GetServiceModelsFilterAsync(SearchModel model);
-		//Task UpdateServiceRating(int serviceId, int rating);
 	}
 }

@@ -32,6 +32,12 @@ namespace PartyGuide.Web.Controllers
 			this.geoNamesService = geoNamesService;
 		}
 
+		public async Task<IActionResult> IndexHome()
+		{
+
+			return View();
+		}
+
 		public async Task<IActionResult> Index()
 		{
 			var model = new SearchModel();

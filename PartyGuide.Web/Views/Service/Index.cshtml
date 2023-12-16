@@ -1,7 +1,4 @@
-﻿@using PartyGuide.Domain.Models;
-@using Microsoft.AspNetCore.Identity
-
-@inject SignInManager<IdentityUser> SignInManager
+﻿@inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
 @model SearchModel
@@ -18,7 +15,7 @@
 }
 
 <!-- Add a button to toggle the form -->
-<button class="btn btn-primary mb-3" id="filterToggleBtn">Toggle Filters</button>
+<button class="btn btn-dark mb-3" id="filterToggleBtn">Filter<i class="fa-solid fa-circle-chevron-down"></i></button>
 
 <!-- Add a collapsible form for filtering -->
 <form method="post" action="@Url.Action("Index", "Service")" class="mb-4" id="filterForm" style="display: none;">
@@ -38,7 +35,18 @@
 				<div class="col-md-3">
 					<div class="form-group">
 						<label for="category">Category</label>
-						<input type="text" name="category" asp-for="Category" id="category" class="form-control" />
+						<select name="category" asp-for="Category" id="category" class="form-select">
+							<option value="All">All</option>
+							<option value="Birthday">Birthday</option>
+							<option value="Anniversary">Anniversary</option>
+							<option value="Wedding">Wedding</option>
+							<option value="Funeral">Funeral</option>
+							<option value="PROM">PROM</option>
+							<option value="Company">Company Party</option>
+							<option value="Baptism">Baptism</option>
+							<option value="Retirement">Retirement Party</option>
+							<option value="Graduation">Graduation Party</option>
+						</select>
 					</div>
 				</div>
 				<div class="col-md-3">

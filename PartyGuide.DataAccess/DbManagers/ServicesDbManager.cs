@@ -45,7 +45,10 @@ namespace PartyGuide.DataAccess.DbManagers
 
 			if (!string.IsNullOrEmpty(category))
 			{
-				query += $"AND t.CATEGORY = '{category}' ";
+				if (category != CommonNomenclature.All)
+				{
+					query += $"AND t.CATEGORY = '{category}' ";
+				}
 			}
 
 			if (!string.IsNullOrEmpty(title))
@@ -58,7 +61,6 @@ namespace PartyGuide.DataAccess.DbManagers
 				if (location != CommonNomenclature.All)
 				{
 					query += $"AND t.LOCATION = '{location}' ";
-
 				}
 			}
 

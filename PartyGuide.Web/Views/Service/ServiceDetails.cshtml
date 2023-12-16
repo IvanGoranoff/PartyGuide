@@ -10,7 +10,7 @@
 		<!-- Main Panel (left side) -->
 		<div class="col-md-8">
 			<div class="card mb-4">
-				<div class="card-header bg-primary text-white">
+				<div class="card-header bg-info text-white">
 					<h3 class="card-title">@Model.Title</h3>
 				</div>
 				<div class="card-body">
@@ -158,6 +158,15 @@
 			var ratingValue = $("#rating").val();
 			var commentValue = $("#comment").val();
 
+			if(ratingValue === "0")
+			{
+				Swal.fire({
+					title: "Please select a rating",
+					icon: "info"
+				});
+				return;
+			}
+
 			// Use AJAX to submit the rating and comment
 			$.ajax({
 				url: "@Url.Action("RateService", "Service")",
@@ -166,15 +175,29 @@
 				success: function (data) {
 					if (data.success) {
 						// Update the rating container with the new rating
+						Swal.fire({
+							title: "Well done!",
+							text: "Rating submitted successfully!",
+							icon: "success"
+						});
 						$("#ratingContainer").html("Rating submitted successfully!");
 					} else {
 						// Display error message
-						alert("Error: " + data.errorMessage);
+						Swal.fire({
+							icon: "error",
+							title: "Oops...",
+							text: data.errorMessage,
+							footer: '<a href="/Identity/Account/Login">Log in</a>'
+						});
 					}
 				},
 				error: function () {
 					// Handle errors
-					alert("An error occurred while submitting the rating.");
+					Swal.fire({
+						icon: "error",
+						title: "Oops...",
+						text: "An error occurred while submitting the rating."
+					});
 				}
 			});
 		});

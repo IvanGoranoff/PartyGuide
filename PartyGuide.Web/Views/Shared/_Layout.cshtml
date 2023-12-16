@@ -51,8 +51,11 @@
 							<a class="nav-link text-dark" asp-area="" asp-controller="Service" asp-action="Privacy">Privacy</a>
 						</li>
 					</ul>
-					<button class="btn btn-success btn-shadow" onclick="location.href='/Service/AddNewService'">Add a service!</button>
+					@*<button class="btn btn-success btn-shadow" onclick="location.href='/Service/AddNewService'">Add a service!</button>*@
 
+					<a class="btn-custom btn-lg" style="color: white; text-decoration: none" href="/Service/AddNewService">
+									<span>Add a service!</span>
+								</a>
 					<partial name="_LoginPartial" />
 				</div>
 			</div>

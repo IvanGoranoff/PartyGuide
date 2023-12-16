@@ -43,12 +43,12 @@
 						<img src="@($"data:image/png;base64,{Convert.ToBase64String(service.Image)}")" class="card-img-top img-fluid" alt="@service.Title" style="height: 200px; object-fit: cover;">
 					}
 					<div class="card-body">
-						<h5 class="card-title">@service.Title</h5>
+						<h4 class="card-title">@service.Title</h4>
 						<p class="card-text">@service.Description</p>
 						<p class="card-text">Phone: @service.PhoneNumber</p>
 						<p class="card-text">Price Range: $@service.StartPriceRange - $@service.EndPriceRange</p>
 						<p class="card-text">Location: @service.Location</p>
-						<a href="@Url.Action("ServiceDetails", "Service", new { id = service.Id })" class="btn btn-primary">Details</a>
+						<a href="@Url.Action("ServiceDetails", "Service", new { id = service.Id })" class="btn btn-outline-secondary">Details</a>
 						<a href="@Url.Action("DeleteService", "Service", new { id = service.Id })" class="btn btn-danger">Delete</a>
 					</div>
 				</div>

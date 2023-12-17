@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - PartyGuide.Web</title>
+	<title>@ViewData["Title"] - PartyGuide</title>
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/PartyGuide.Web.styles.css" asp-append-version="true" />
@@ -75,14 +75,14 @@
 
 	<footer class="border-top footer text-muted">
 		<div class="container">
-			&copy; 2023 - PartyGuide.Web - <a asp-area="" asp-controller="Service" asp-action="Privacy">Privacy</a>
+			&copy; 2023 - PartyGuide - <a asp-area="" asp-controller="Service" asp-action="Privacy">Privacy</a>
 		</div>
 	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 	<script src="~/lib/sweetalert2/sweetalert2.all.js" asp-append-version="true"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBqBdFRdvJZQuY0WeqjCU7YbVE8BpE56Y&libraries=places"></script>
+	@*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBqBdFRdvJZQuY0WeqjCU7YbVE8BpE56Y&libraries=places"></script>*@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
 			crossorigin="anonymous"></script>
 	@await RenderSectionAsync("Scripts", required: false)

@@ -10,7 +10,7 @@
 		<!-- Main Panel (left side) -->
 		<div class="col-md-8">
 			<div class="card mb-4">
-				<div class="card-header bg-info text-white">
+				<div class="card-header" style="background: linear-gradient(to right, #33ccff, #ff99cc); color: white;">
 					<h3 class="card-title">@Model.Title</h3>
 				</div>
 				<div class="card-body">
@@ -25,12 +25,13 @@
 				</div>
 			</div>
 		</div>
+
 		<input asp-for="@Model.Id" id="service-id" type="hidden" value="@Model.Id" />
 
 		<!-- Additional Information and Contact the Seller Panels (right side) -->
 		<div class="col-md-4">
 			<div class="card mb-4">
-				<div class="card-header bg-secondary text-white">
+				<div class="card-header" style="background:linear-gradient(to left, #33ccff, #ff99cc); color: white;">
 					<h4 class="card-title">Additional Information</h4>
 				</div>
 				<div class="card-body">
@@ -40,19 +41,18 @@
 			</div>
 
 			<div class="card mb-4">
-				<div class="card-header bg-info text-white">
+				<div class="card-header" style="background:linear-gradient(to left, #33ccff, #ff99cc); color: white;">
 					<h4 class="card-title">Contact the Seller</h4>
 				</div>
 				<div class="card-body">
 					<p class="card-text">If you're interested in this service, feel free to contact the seller for more details or to make arrangements.</p>
-					<button class="btn btn-primary">Contact Seller</button>
+					<button class="btn btn-outline-info">Contact Seller</button>
 				</div>
 			</div>
 
 			<!-- Google Maps Panel (right side) -->
-
 			<div class="card mb-4">
-				<div class="card-header bg-success text-white">
+				<div class="card-header" style="background:linear-gradient(to left, #33ccff, #ff99cc); color: white;">
 					<h4 class="card-title">Find Us</h4>
 				</div>
 				<div class="card-body">
@@ -64,15 +64,14 @@
 </div>
 
 <div class="container mt-5">
-	<!-- Add a Service Card -->
+	<!-- Rate the Service Card -->
 	<div class="card">
 		<div class="card-header">
-			Add a Service
+			<h5 class="card-title">Rate this Service</h5>
 		</div>
 		<div class="card-body">
 			<!-- Star Rating Section -->
 			<div class="mb-3">
-				<h5 class="card-title">Rate this Service</h5>
 				<div class="rating">
 					<i class="far fa-star" data-rating="1"></i>
 					<i class="far fa-star" data-rating="2"></i>
@@ -88,7 +87,7 @@
 				<input type="text" class="form-control" id="comment" placeholder="Add your comment..." />
 			</div>
 			<!-- Submit Button -->
-			<button type="button" id="submitRating" class="btn btn-primary float-end">Submit</button>
+			<button type="button" id="submitRating" class="btn btn-outline-success float-end">Submit</button>
 		</div>
 	</div>
 
@@ -178,7 +177,7 @@
 						Swal.fire({
 							title: "Well done!",
 							text: "Rating submitted successfully!",
-							icon: "success"
+							icon: "success",
 						});
 						$("#ratingContainer").html("Rating submitted successfully!");
 					} else {

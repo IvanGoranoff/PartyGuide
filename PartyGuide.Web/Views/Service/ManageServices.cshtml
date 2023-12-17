@@ -50,9 +50,81 @@
 						<p class="card-text">Location: @service.Location</p>
 						<a href="@Url.Action("ServiceDetails", "Service", new { id = service.Id })" class="btn btn-outline-secondary">Details</a>
 						<a href="@Url.Action("DeleteService", "Service", new { id = service.Id })" class="btn btn-danger">Delete</a>
+						<div class="rating float-end">
+							@if (service.Ratings != null && service.Ratings.Any())
+							{
+								var averageRating = service.Ratings.Average(r => r.Rating);
+								for (int i = 1; i <= 5; i++)
+								{
+									<span class="fa fa-star @(i <= averageRating ? "checked" : "")"></span>
+								}
+								<span>(@service.Ratings.Count reviews)</span>
+							}
+							else
+							{
+								<span>No reviews yet</span>
+							}
+						</div>
 					</div>
 				</div>
 			</div>
 		}
 	</div>
 </div>
+
+@section scripts {
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/vader/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			// Toggle the form visibility on button click
+			$("#filterToggleBtn").click(function () {
+				$("#filterForm").toggle();
+			});
+
+			// Initialize the startPrice slider
+			$("#startPriceSlider").slider({
+				range: "min",
+				value: 0,
+				min: 0,
+				max: 1000,
+				slide: function (event, ui) {
+					// Check if startPrice is greater than endPrice
+					if (ui.value >= $("#endPriceSlider").slider("value")) {
+						return false;
+					}
+
+					$("#startPriceValue").val(ui.value);
+					$("#startPrice").val(ui.value);
+				}
+			});
+
+			// Set initial value for startPrice
+			$("#startPriceValue").val($("#startPriceSlider").slider("value"));
+			$("#startPrice").val($("#startPriceSlider").slider("value"));
+
+			// Initialize the endPrice slider
+			$("#endPriceSlider").slider({
+				range: "max",
+				value: 1000,
+				min: 0,
+				max: 1000,
+				slide: function (event, ui) {
+					// Check if endPrice is less than startPrice
+					if (ui.value <= $("#startPriceSlider").slider("value")) {
+						return false;
+					}
+
+					$("#endPriceValue").val(ui.value);
+					$("#endPrice").val(ui.value);
+				}
+			});
+
+			// Set initial value for endPrice
+			$("#endPriceValue").val($("#endPriceSlider").slider("value"));
+			$("#endPrice").val($("#endPriceSlider").slider("value"));
+		});
+	</script>
+}

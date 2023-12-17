@@ -178,6 +178,9 @@
 							title: "Well done!",
 							text: "Rating submitted successfully!",
 							icon: "success",
+						}).then(() => {
+							// Reload the page after the user clicks "OK" in the Swal popup
+							location.reload();
 						});
 						$("#ratingContainer").html("Rating submitted successfully!");
 					} else {

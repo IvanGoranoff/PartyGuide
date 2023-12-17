@@ -14,73 +14,12 @@
 	</div>
 }
 
-<!-- Add a button to toggle the form -->
+<!-- Button to toggle the form -->
 <button class="btn btn-outline-dark mb-3" id="filterToggleBtn">Filter   <i class="fa-solid fa-circle-chevron-down"></i></button>
 
-<!-- Add a collapsible form for filtering -->
+<!-- Collapsable form for filtering -->
 <form method="post" action="@Url.Action("Index", "Service")" class="mb-4" id="filterForm" style="display: none;">
 	@Html.Partial("_SearchPanelPartial")
-	@*<div class="card border-primary mb-12">
-		<div class="card-header">Search</div>
-		<div class="card-body text-primary">
-
-			<div class="row">
-				<div class="col-md-3">
-					<div class="form-group">
-						<label for="startPrice">Start Price</label>
-						<input type="text" id="startPriceValue" readonly style="border:0; color:#f6931f; font-weight:bold;">
-						<div id="startPriceSlider"></div>
-						<input type="hidden" name="startPrice" asp-for="StartPrice" id="startPrice" />
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label for="category">Category</label>
-						<select name="category" asp-for="Category" id="category" class="form-select">
-							<option value="All">All</option>
-							<option value="Birthday">Birthday</option>
-							<option value="Anniversary">Anniversary</option>
-							<option value="Wedding">Wedding</option>
-							<option value="Funeral">Funeral</option>
-							<option value="PROM">PROM</option>
-							<option value="Company">Company Party</option>
-							<option value="Baptism">Baptism</option>
-							<option value="Retirement">Retirement Party</option>
-							<option value="Graduation">Graduation Party</option>
-						</select>
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label for="title">Title</label>
-						<input type="text" name="title" id="title"asp-for="Title" class="form-control" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-3">
-					<div class="form-group">
-						<label for="endPrice">End Price</label>
-						<input type="text" id="endPriceValue" readonly style="border:0; color:#f6931f; font-weight:bold;">
-						<div id="endPriceSlider"></div>
-						<input type="hidden" name="endPrice" asp-for="EndPrice" id="endPrice" />
-					</div>
-				</div>
-				<div class="col-md-3">
-					<div class="form-group">
-						<label for="location">Location</label>
-						<select asp-for="Location" asp-items="@ViewBag.Cities" id="location" class="form-control"></select>
-					</div>
-
-				</div>
-				<div class="col-md-3">
-					<div class="form-group mt-4">
-						<button type="submit" class="btn btn-primary">Apply Filters</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>*@
 </form>
 
 @if (Model.Services.Count == 0)
@@ -93,7 +32,8 @@
 		@foreach (var service in Model.Services)
 		{
 			<div class="col-md-4 mb-4">
-				<div class="card">
+				<div class="card position-relative">
+					<img src="~/images/party-guide.png" class="card-logo position-absolute top-0 start-0 opacity-75" alt="Site Logo" width="50px" height="50px" style="padding:10px">	
 					@if (service.Image != null && service.Image.Length > 0)
 					{
 						<img src="@($"data:image/png;base64,{Convert.ToBase64String(service.Image)}")" class="card-img-top img-fluid" alt="@service.Title" style="height: 200px; object-fit: cover;">
@@ -107,7 +47,7 @@
 						<a href="@Url.Action("ServiceDetails", "Service", new { id = service.Id })" class="btn btn-outline-secondary">Details</a>
 						@if (User.IsInRole("Admin"))
 						{
-							<a href="@Url.Action("DeleteService", "Service", new { id = service.Id })" class="btn btn-danger">Delete</a>
+							<button class="btn btn-danger delete-btn" data-service-id="@service.Id">Delete</button>
 						}
 						<div class="rating float-end">
 							@if (service.Ratings != null && service.Ratings.Any())

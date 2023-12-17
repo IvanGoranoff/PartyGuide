@@ -151,6 +151,18 @@ namespace PartyGuide.Web.Controllers
 		[HttpGet]
 		public async Task<IActionResult> DeleteService(int? id)
 		{
+			// If the user is Admin - do not check if the current service is created by him
+			//var userIsAdmin = User.Claims.Select(role => role.Value).Contains("Admin");
+			var userIsAdmin = User.IsInRole("Admin");
+
+			if (userIsAdmin)
+			{
+				await serviceManager.DeleteService(id);
+
+				return Json(new { success = true });
+			}
+
+			// Check if the service is created by the user
 			string currentUser = User.FindFirst(ClaimTypes.Email)?.Value;
 
 			var serviceModels = await serviceManager.GetAllServicesByUserAsync(currentUser);

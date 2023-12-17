@@ -16,7 +16,6 @@
 	<style>
 		body {
 			background: url('/images/master-background.jpg') center center/cover no-repeat fixed;
-			/* Adjust other body styles as needed */
 		}
 	</style>
 </head>
@@ -82,9 +81,7 @@
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 	<script src="~/lib/sweetalert2/sweetalert2.all.js" asp-append-version="true"></script>
-	@*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBqBdFRdvJZQuY0WeqjCU7YbVE8BpE56Y&libraries=places"></script>*@
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-			crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

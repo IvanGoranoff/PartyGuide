@@ -45,6 +45,6 @@ namespace PartyGuide.Domain.Models
 
 		public string? CreatedBy { get; set; }
 
-		public ICollection<RatingTable> Ratings { get; set; }
+		public ICollection<RatingTable>? Ratings { get; set; }
 	}
 }

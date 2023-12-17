@@ -159,14 +159,13 @@ namespace PartyGuide.Web.Controllers
 			{
 				await serviceManager.DeleteService(id);
 
-				TempData["SuccessMessage"] = "Service deleted successfully.";
+				return Json(new { success = true });
 			}
 			else
 			{
-				TempData["SuccessMessage"] = "Service not found.";
+				return Json(new { success = false });
 			}
 
-			return RedirectToAction("ManageServices");
 		}
 
 		[HttpPost]

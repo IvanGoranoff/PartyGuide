@@ -7,7 +7,7 @@
 @model List<ServiceModel>
 
 @{
-	ViewData["Title"] = "Service Catalog";
+	ViewData["Title"] = "Your Services";
 }
 
 @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
@@ -37,7 +37,9 @@
 		@foreach (var service in Model)
 		{
 			<div class="col-md-4 mb-4">
-				<div class="card">
+				<div class="card position-relative">
+					<img src="~/images/party-guide.png" class="card-logo position-absolute top-0 start-0 opacity-75" alt="Site Logo" width="50px" height="50px" style="margin:10px">
+
 					@if (service.Image != null && service.Image.Length > 0)
 					{
 						<img src="@($"data:image/png;base64,{Convert.ToBase64String(service.Image)}")" class="card-img-top img-fluid" alt="@service.Title" style="height: 200px; object-fit: cover;">

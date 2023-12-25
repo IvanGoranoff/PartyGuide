@@ -1,0 +1,245 @@
+﻿@using PartyGuide.Domain.Models;
+@model ServiceModel
+@{
+	ViewData["Title"] = "Service Details";
+}
+
+<div class="container mt-5">
+	<div class="row">
+
+		<!-- Main Panel (left side) -->
+		<div class="col-md-8">
+			<div class="card mb-4">
+				<div class="card-header" style="background: linear-gradient(to right, #33ccff, #ff99cc); color: white;">
+					<h3 class="card-title">@Model.Title</h3>
+				</div>
+				<div class="card-body position-relative">
+					<img src="~/images/party-guide.png" class="card-logo position-absolute top-0 start-0 opacity-50" alt="Site Logo" width="200px" height="200px" style="margin:10px">
+					@if (Model.Image != null && Model.Image.Length > 0)
+					{
+						<img src="@($"data:image/png;base64,{Convert.ToBase64String(Model.Image)}")" class="card-img-top img-fluid mb-4" alt="@Model.Title" style="object-fit: cover;">
+					}
+					<p class="card-text"><strong>Description:</strong><br />@Model.Description</p>
+					<p class="card-text"><strong>Phone:</strong> @Model.PhoneNumber</p>
+					<p class="card-text"><strong>Price Range:</strong> $@Model.StartPriceRange - $@Model.EndPriceRange</p>
+					<p class="card-text"><strong>Location:</strong> @Model.Location</p>
+				</div>
+			</div>
+		</div>
+
+		<input asp-for="@Model.Id" id="service-id" type="hidden" value="@Model.Id" />
+
+		<!-- Additional Information and Contact the Seller Panels (right side) -->
+		<div class="col-md-4">
+			<div class="card mb-4">
+				<div class="card-header" style="background:linear-gradient(to left, #33ccff, #ff99cc); color: white;">
+					<h4 class="card-title">Additional Information</h4>
+				</div>
+				<div class="card-body">
+					<!-- Add additional information here -->
+					<p class="card-text">@Model.ExtendedDescription</p>
+				</div>
+			</div>
+
+			<div class="card mb-4">
+				<div class="card-header" style="background:linear-gradient(to left, #33ccff, #ff99cc); color: white;">
+					<h4 class="card-title">Contact the Seller</h4>
+				</div>
+				<div class="card-body">
+					<p class="card-text">If you're interested in this service, feel free to contact the seller for more details or to make arrangements.</p>
+					<a class="btn btn-outline-primary" href="tel:@Model.PhoneNumber"><i class="fa-solid fa-phone"></i>  Call now</a>
+					<a class="btn btn-outline-info" href="mailto:ayrtonbul@gmail.com"><i class="fa-solid fa-envelope"></i>  Email</a>
+				</div>
+			</div>
+
+			<!-- Google Maps Panel (right side) -->
+			<div class="card mb-4">
+				<div class="card-header" style="background:linear-gradient(to left, #33ccff, #ff99cc); color: white;">
+					<h4 class="card-title">Find Us</h4>
+				</div>
+				<div class="card-body">
+					<div id="google-meet" style="height: 300px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container mt-5">
+	<!-- Rate the Service Card -->
+	<div class="card">
+		<div class="card-header">
+			<h5 class="card-title">Rate this Service</h5>
+		</div>
+		<div class="card-body">
+			<!-- Star Rating Section -->
+			<div class="mb-3">
+				<div class="rating">
+					<i class="far fa-star" data-rating="1"></i>
+					<i class="far fa-star" data-rating="2"></i>
+					<i class="far fa-star" data-rating="3"></i>
+					<i class="far fa-star" data-rating="4"></i>
+					<i class="far fa-star" data-rating="5"></i>
+					<input type="hidden" name="rating" id="rating" value="0">
+				</div>
+			</div>
+			<!-- Input Field -->
+			<div class="mb-3">
+				<label for="comment" class="form-label">Comment:</label>
+				<input type="text" class="form-control" id="comment" placeholder="Add your comment..." />
+			</div>
+			<!-- Submit Button -->
+			<button type="button" id="submitRating" class="btn btn-outline-success float-end">Submit</button>
+		</div>
+	</div>
+
+	<!-- Reviews List Card -->
+	<div class="card mt-4">
+		<div class="card-header">
+			Service Reviews
+		</div>
+		<div class="card-body">
+			<div class="rating">
+				@if (Model.Ratings != null && Model.Ratings.Any())
+				{
+					var averageRating = Model.Ratings.Average(r => r.Rating);
+					for (int i = 1; i <= 5; i++)
+					{
+						<span class="fa fa-star @(i <= averageRating ? "checked" : "")"></span>
+					}
+					<span>(@Model.Ratings.Count reviews)</span>
+
+					<div class="individual-reviews mt-3">
+						<h5>Individual Reviews:</h5>
+						@foreach (var review in Model.Ratings)
+						{
+							<div class="card mb-3">
+								<div class="card-header">
+									Reviewer: @review.UserId
+								</div>
+								<div class="card-body">
+									<p class="card-text">
+										Rating:
+										@for (int i = 1; i <= 5; i++)
+										{
+											<span class="fa fa-star @(i <= review.Rating ? "checked" : "")"></span>
+										}
+									</p>
+									<p class="card-text">Comment: @review.Comment</p>
+								</div>
+							</div>
+						}
+					</div>
+				}
+				else
+				{
+					<span>No reviews yet</span>
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBqBdFRdvJZQuY0WeqjCU7YbVE8BpE56Y&libraries=places"></script>
+
+
+<script>
+	$(document).ready(function () {
+
+		var serviceId = @Model.Id;
+		$(".rating i").on("click", function () {
+			var rating = $(this).data("rating");
+			$("#rating").val(rating);
+			$(".rating i").removeClass("fas").addClass("far");
+			$(this).prevAll().addBack().removeClass("far").addClass("fas");
+		});
+
+		$("#submitRating").on("click", function () {
+			var ratingValue = $("#rating").val();
+			var commentValue = $("#comment").val();
+
+			if(ratingValue === "0")
+			{
+				Swal.fire({
+					title: "Please select a rating",
+					icon: "info"
+				});
+				return;
+			}
+
+			// Use AJAX to submit the rating and comment
+			$.ajax({
+				url: "@Url.Action("RateService", "Service")",
+				method: "POST",
+				data: { serviceId: serviceId, rating: ratingValue, comment: commentValue },
+				success: function (data) {
+					if (data.success) {
+						// Update the rating container with the new rating
+						Swal.fire({
+							title: "Well done!",
+							text: "Rating submitted successfully!",
+							icon: "success",
+						}).then(() => {
+							// Reload the page after the user clicks "OK" in the Swal popup
+							location.reload();
+						});
+						$("#ratingContainer").html("Rating submitted successfully!");
+					} else {
+						// Display error message
+						Swal.fire({
+							icon: "error",
+							title: "Oops...",
+							text: data.errorMessage,
+							footer: '<a href="/Identity/Account/Login">Log in</a>'
+						});
+					}
+				},
+				error: function () {
+					// Handle errors
+					Swal.fire({
+						icon: "error",
+						title: "Oops...",
+						text: "An error occurred while submitting the rating."
+					});
+				}
+			});
+		});
+	});
+</script>
+<script>
+
+	function initMap() {
+		// Get the city name from the Model.Location
+		var cityName = '@Model.Location';
+
+		// Create a Geocoder instance to get the coordinates of the city
+		var geocoder = new google.maps.Geocoder();
+
+		// Initialize the map centered on the city
+		var map = new google.maps.Map(document.getElementById('google-meet'), {
+			zoom: 10, // You can adjust the initial zoom level
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		});
+
+		// Use Geocoder to get the coordinates of the city
+		geocoder.geocode({ 'address': cityName + ', Bulgaria' }, function (results, status) {
+			if (status == google.maps.GeocoderStatus.OK) {
+				// Center the map on the city coordinates
+				map.setCenter(results[0].geometry.location);
+
+				// Add a marker for the city
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[0].geometry.location,
+					title: cityName
+				});
+			} else {
+				console.error('Geocode was not successful for the following reason: ' + status);
+			}
+		});
+	}
+
+	// Initialize the map when the page is loaded
+	google.maps.event.addDomListener(window, 'load', initMap);
+</script>

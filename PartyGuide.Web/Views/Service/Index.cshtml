@@ -1,0 +1,129 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@model SearchModel
+
+@{
+	ViewData["Title"] = "Service Catalog";
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+	<div class="alert alert-success">
+		@ViewBag.SuccessMessage
+	</div>
+}
+
+<!-- Button to toggle the form -->
+<button class="btn btn-outline-dark mb-3" id="filterToggleBtn">Filter   <i class="fa-solid fa-circle-chevron-down"></i></button>
+
+<!-- Collapsable form for filtering -->
+<form method="post" action="@Url.Action("Index", "Service")" class="mb-4" id="filterForm" style="display: none;">
+	@Html.Partial("_SearchPanelPartial")
+</form>
+
+@if (Model.Services.Count == 0)
+{
+	@Html.Partial("_NoAvailableServicesPartial")
+}
+
+<div class="container mt-5">
+	<div class="row">
+		@foreach (var service in Model.Services)
+		{
+			<div class="col-md-4 mb-4">
+				<div class="card position-relative">
+					<img src="~/images/party-guide.png" class="card-logo position-absolute top-0 start-0 opacity-75" alt="Site Logo" width="50px" height="50px" style="margin:10px">	
+					@if (service.Image != null && service.Image.Length > 0)
+					{
+						<img src="@($"data:image/png;base64,{Convert.ToBase64String(service.Image)}")" class="card-img-top img-fluid" alt="@service.Title" style="height: 200px; object-fit: cover;">
+					}
+					<div class="card-body">
+						<h4 class="card-title">@service.Title</h4>
+						<p class="card-text">@service.Description</p>
+						<p class="card-text">Phone: @service.PhoneNumber</p>
+						<p class="card-text">Price Range: $@service.StartPriceRange - $@service.EndPriceRange</p>
+						<p class="card-text">Location: @service.Location</p>
+						<a href="@Url.Action("ServiceDetails", "Service", new { id = service.Id })" class="btn btn-outline-secondary">Details</a>
+						@if (User.IsInRole("Admin"))
+						{
+							<button class="btn btn-danger delete-btn" data-service-id="@service.Id">Delete</button>
+						}
+						<div class="rating float-end">
+							@if (service.Ratings != null && service.Ratings.Any())
+							{
+								var averageRating = service.Ratings.Average(r => r.Rating);
+								for (int i = 1; i <= 5; i++)
+								{
+									<span class="fa fa-star @(i <= averageRating ? "checked" : "")"></span>
+								}
+								<span>(@service.Ratings.Count reviews)</span>
+							}
+							else
+							{
+								<span>No reviews yet</span>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
+@section scripts {
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/vader/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			// Toggle the form visibility on button click
+			$("#filterToggleBtn").click(function () {
+				$("#filterForm").toggle();
+			});
+
+			// Initialize the startPrice slider
+			$("#startPriceSlider").slider({
+				range: "min",
+				value: 0,
+				min: 0,
+				max: 1000,
+				slide: function (event, ui) {
+					// Check if startPrice is greater than endPrice
+					if (ui.value >= $("#endPriceSlider").slider("value")) {
+						return false;
+					}
+
+					$("#startPriceValue").val(ui.value);
+					$("#startPrice").val(ui.value);
+				}
+			});
+
+			// Set initial value for startPrice
+			$("#startPriceValue").val($("#startPriceSlider").slider("value"));
+			$("#startPrice").val($("#startPriceSlider").slider("value"));
+
+			// Initialize the endPrice slider
+			$("#endPriceSlider").slider({
+				range: "max",
+				value: 1000,
+				min: 0,
+				max: 1000,
+				slide: function (event, ui) {
+					// Check if endPrice is less than startPrice
+					if (ui.value <= $("#startPriceSlider").slider("value")) {
+						return false;
+					}
+
+					$("#endPriceValue").val(ui.value);
+					$("#endPrice").val(ui.value);
+				}
+			});
+
+			// Set initial value for endPrice
+			$("#endPriceValue").val($("#endPriceSlider").slider("value"));
+			$("#endPrice").val($("#endPriceSlider").slider("value"));
+		});
+	</script>
+}

@@ -1,0 +1,181 @@
+﻿@using PartyGuide.Domain.Models;
+@model ServiceModel
+@{
+	ViewData["Title"] = "Add New Service";
+}
+
+<style>
+	.validation-message {
+		color: #dc3545;
+		font-size: 0.9rem;
+		margin-top: 5px;
+	}
+
+	#previewCard {
+		max-width: 100%;
+	}
+</style>
+
+@using (Html.BeginForm("AddNewService", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+	<div class="container mt-5">
+		<div class="row">
+			<!-- Left Panel -->
+			<div class="col-lg-8 mb-4">
+				<div class="card">
+					<div class="card-header bg-primary text-white" style="background: linear-gradient(to right, #33ccff, #ff99cc); color: white;">
+						<h3 class="card-title">Add New Service</h3>
+					</div>
+					<div class="card-body">
+						<div class="mb-3">
+							<label class="form-label">Title</label>
+							<input id="Title" asp-for="Title" class="form-control" placeholder="Choose a grasping title" />
+							@Html.ValidationMessageFor(m => m.Title, "", new { @class = "validation-message" })
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Image</label>
+							<div class="input-group">
+								<input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*">
+							</div>
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Category</label>
+							<select id="Category" asp-for="Category" class="form-select">
+								<option value="Birthday">Birthday</option>
+								<option value="Anniversary">Anniversary</option>
+								<option value="Wedding">Wedding</option>
+								<option value="Funeral">Funeral</option>
+								<option value="PROM">PROM</option>
+								<option value="Company">Company Party</option>
+								<option value="Baptism">Baptism</option>
+								<option value="Retirement">Retirement Party</option>
+								<option value="Graduation">Graduation Party</option>
+							</select>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Description</label>
+							<input id="Description" asp-for="Description" class="form-control" placeholder="Enter a short description of your service" />
+							@Html.ValidationMessageFor(m => m.Description, "", new {@class = "validation-message"})
+
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Extended Description</label>
+							<input id="ExtendedDescription" asp-for="ExtendedDescription" class="form-control" placeholder="Enter a thorough description of your service" />
+							@Html.ValidationMessageFor(m => m.ExtendedDescription, "", new {@class = "validation-message"})
+
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Phone Number</label>
+							<input id="PhoneNumber" asp-for="PhoneNumber" class="form-control" placeholder="Where can your clients reach you" />
+							@Html.ValidationMessageFor(m => m.PhoneNumber, "", new {@class = "validation-message"})
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Start Price Range</label>
+							<input id="StartPriceRange" asp-for="StartPriceRange" class="form-control" placeholder="Enter the lowest cost of you service" />
+							@Html.ValidationMessageFor(m => m.StartPriceRange, "", new {@class = "validation-message"})
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">End Price Range</label>
+							<input id="EndPriceRange" asp-for="EndPriceRange" class="form-control" placeholder="Enter the highest price of a product you offer" />
+							@Html.ValidationMessageFor(m => m.EndPriceRange, "", new {@class = "validation-message"})
+						</div>
+
+						<div class="mb-3">
+							<label class="form-label">Location</label>
+							<select asp-for="Location" asp-items="@ViewBag.Cities" id="Location" class="form-control"></select>
+							@*<input id="Location" asp-for="Location" class="form-control" placeholder="Enter your service's whereabouts" />*@
+						</div>
+
+						<button type="submit" class="btn btn-outline-success">Create</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Right Panel -->
+			<div class="col-md-4">
+				<!-- Preview Card -->
+				<div class="card" id="previewCard">
+					<img id="previewImage" class="card-img-top img-fluid" alt="Service Title" src="~/images/banner.png" style="height: 200px; object-fit: cover;">
+					<div class="card-body">
+						<h5 class="card-title">Service Title</h5>
+						<p class="card-text">Service Description</p>
+						<p class="card-text">Phone: Phone Number</p>
+						<p class="card-text">Price Range: Start Price - End Price</p>
+						<p class="card-text">Location: Service Location</p>
+						<a href="#" class="btn btn-outline-secondary">Details</a>
+						<div class="rating float-end">
+							<span class="fa fa-star checked"></span>
+							<span class="fa fa-star checked"></span>
+							<span class="fa fa-star checked"></span>
+							<span class="fa fa-star checked"></span>
+							<span class="fa fa-star checked"></span>
+							<span>(10 reviews)</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+	<!-- Add JavaScript to update the preview card dynamically -->
+	<script>
+		// Function to update the preview card
+		function updatePreviewCard() {
+			// Get values from the form
+			var title = document.getElementById('Title').value;
+			var description = document.getElementById('Description').value;
+			var phoneNumber = document.getElementById('PhoneNumber').value;
+			var startPriceRange = document.getElementById('StartPriceRange').value;
+			var endPriceRange = document.getElementById('EndPriceRange').value;
+			var location = document.getElementById('Location').value;
+
+			// Update the preview card content
+			document.getElementById('previewCard').innerHTML = `
+																<img id="previewImage" class="card-img-top img-fluid" alt="${title}" style="height: 200px; object-fit: cover;">
+																<div class="card-body">
+																	<h5 class="card-title">${title}</h5>
+																	<p class="card-text">${description}</p>
+																	<p class="card-text">Phone: ${phoneNumber}</p>
+																	<p class="card-text">Price Range: $${startPriceRange} - $${endPriceRange}</p>
+																	<p class="card-text">Location: ${location}</p>
+																	<a href="#" class="btn btn-outline-secondary">Details</a>
+																	<div class="rating float-end">
+																		<span class="fa fa-star checked"></span>
+																		<span class="fa fa-star checked"></span>
+																		<span class="fa fa-star checked"></span>
+																		<span class="fa fa-star checked"></span>
+																		<span class="fa fa-star checked"></span>
+																		<span>(10 reviews)</span>
+																	</div>
+																`;
+
+			// Read and display the selected image
+			var inputImage = document.getElementById('imageFile');
+			if (inputImage.files && inputImage.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					document.getElementById('previewImage').src = e.target.result;
+				};
+				reader.readAsDataURL(inputImage.files[0]);
+			}
+			else {
+				// Use a default image if none is selected
+				document.getElementById('previewImage').src = fullUrl + '/images/banner.png'; // Replace with the path to your default image
+			}
+		}
+
+		// Hook up the function to form input events (you may need to adjust based on your actual form elements)
+		document.getElementById('Title').addEventListener('input', updatePreviewCard);
+		document.getElementById('Description').addEventListener('input', updatePreviewCard);
+		document.getElementById('PhoneNumber').addEventListener('input', updatePreviewCard);
+		document.getElementById('StartPriceRange').addEventListener('input', updatePreviewCard);
+		document.getElementById('EndPriceRange').addEventListener('input', updatePreviewCard);
+		document.getElementById('Location').addEventListener('input', updatePreviewCard);
+		document.getElementById('imageFile').addEventListener('change', updatePreviewCard);
+	</script>

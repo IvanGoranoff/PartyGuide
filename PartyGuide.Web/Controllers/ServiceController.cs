@@ -115,7 +115,6 @@ namespace PartyGuide.Web.Controllers
 				}
 				else
 				{
-					// No image uploaded, set the default image
 					string defaultImagePath = Path.Combine("wwwroot", "images", "banner.png");
 					byte[] defaultImageBytes = System.IO.File.ReadAllBytes(defaultImagePath);
 					model.Image = defaultImageBytes;

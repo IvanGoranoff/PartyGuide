@@ -107,3 +107,13 @@ span.checked {
     }
 }
 
+.validation-message {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+#previewCard {
+    max-width: 100%;
+}
+

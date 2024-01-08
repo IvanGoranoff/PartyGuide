@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartyGuide.Domain", "PartyG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartyGuide.Common", "PartyGuide.Common\PartyGuide.Common.csproj", "{E606B291-7E10-437D-AA05-55D3EA36C9E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyGuide.UnitTest", "PartyGuide.UnitTest\PartyGuide.UnitTest.csproj", "{1132FE6A-BAF1-4607-9BFD-3CFAD52B5D27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PartyGuide.UnitTest", "PartyGuide.UnitTest\PartyGuide.UnitTest.csproj", "{1132FE6A-BAF1-4607-9BFD-3CFAD52B5D27}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachineLearningCathegory", "MachineLearningCathegory\MachineLearningCathegory.csproj", "{197A8A10-8D4D-4BE9-A791-A0553EFEBBE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{1132FE6A-BAF1-4607-9BFD-3CFAD52B5D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1132FE6A-BAF1-4607-9BFD-3CFAD52B5D27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1132FE6A-BAF1-4607-9BFD-3CFAD52B5D27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{197A8A10-8D4D-4BE9-A791-A0553EFEBBE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{197A8A10-8D4D-4BE9-A791-A0553EFEBBE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{197A8A10-8D4D-4BE9-A791-A0553EFEBBE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{197A8A10-8D4D-4BE9-A791-A0553EFEBBE9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

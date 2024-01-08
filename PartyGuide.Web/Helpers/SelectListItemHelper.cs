@@ -15,7 +15,7 @@ namespace PartyGuide.Web.Helpers
 			{
 				foreach (City city in citiesList)
 				{
-					citiesSelectList.Add(new SelectListItem { Text = city.Name, Value = city.Name});
+					citiesSelectList.Add(new SelectListItem { Text = city.Name, Value = city.Name });
 				}
 			}
 
@@ -36,5 +36,23 @@ namespace PartyGuide.Web.Helpers
 
 			return citiesSelectList;
 		}
+
+		public static List<SelectListItem> CreateCategoriesList()
+		{
+			var categoriesSelectList = new List<SelectListItem>()
+	{
+		new SelectListItem { Value = "Birthday", Text = "Birthday" },
+		new SelectListItem { Value = "Anniversary", Text = "Anniversary" },
+		new SelectListItem { Value = "Wedding", Text = "Wedding" },
+		new SelectListItem { Value = "PROM", Text = "PROM" },
+		new SelectListItem { Value = "Company", Text = "Company" },
+		new SelectListItem { Value = "Baptism", Text = "Baptism" },
+		new SelectListItem { Value = "Retirement", Text = "Retirement" },
+		new SelectListItem { Value = "Graduation", Text = "Graduation" },
+	};
+
+			return categoriesSelectList;
+		}
+
 	}
 }

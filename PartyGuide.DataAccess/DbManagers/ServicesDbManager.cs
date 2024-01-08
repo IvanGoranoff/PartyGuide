@@ -23,7 +23,6 @@ namespace PartyGuide.DataAccess.DbManagers
 		public async Task<List<ServiceTable>> GetAllServicesAsync()
 		{
 			return await dbContext.ServiceTables.Include(s => s.Ratings).ToListAsync();
-
 		}
 
 		public async Task<List<ServiceTable>> GetAllServicesByUserAsync(string currentUser)

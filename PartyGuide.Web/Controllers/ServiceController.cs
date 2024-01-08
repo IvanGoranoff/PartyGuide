@@ -38,6 +38,26 @@ namespace PartyGuide.Web.Controllers
 			return View();
 		}
 
+		[HttpPost]
+		public IActionResult GetCategoryByTitle(string title)
+		{
+			// Implement your logic to determine the category based on the title
+			// For this example, let's assume a simple condition
+			string category = "";
+
+			if (title.Contains("birthday"))
+			{
+				category = "Birthday";
+			}
+			else if (title.Contains("health"))
+			{
+				category = "Health";
+			}
+
+			return Json(category);
+		}
+
+
 		public async Task<IActionResult> Index()
 		{
 			var model = new SearchModel();
@@ -78,6 +98,7 @@ namespace PartyGuide.Web.Controllers
 		{
 			List<City> cities = geoNamesService.GetCitiesInBulgaria();
 			ViewBag.Cities = SelectListItemHelper.CreateOnlyCitiesSelectList(cities);
+			ViewBag.Categories = SelectListItemHelper.CreateCategoriesList();
 
 			return View();
 		}

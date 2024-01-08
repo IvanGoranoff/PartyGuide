@@ -170,7 +170,7 @@
 
 			// Use AJAX to submit the rating and comment
 			$.ajax({
-				url: "@Url.Action("RateService", "Service")",
+				url: "@Url.Action("RateService", "Rating")",
 				method: "POST",
 				data: { serviceId: serviceId, rating: ratingValue, comment: commentValue },
 				success: function (data) {

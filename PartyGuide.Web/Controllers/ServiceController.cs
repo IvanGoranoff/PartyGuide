@@ -34,29 +34,8 @@ namespace PartyGuide.Web.Controllers
 
 		public async Task<IActionResult> IndexHome()
 		{
-
 			return View();
 		}
-
-		[HttpPost]
-		public IActionResult GetCategoryByTitle(string title)
-		{
-			// Implement your logic to determine the category based on the title
-			// For this example, let's assume a simple condition
-			string category = "";
-
-			if (title.Contains("birthday"))
-			{
-				category = "Birthday";
-			}
-			else if (title.Contains("health"))
-			{
-				category = "Health";
-			}
-
-			return Json(category);
-		}
-
 
 		public async Task<IActionResult> Index()
 		{
@@ -112,6 +91,7 @@ namespace PartyGuide.Web.Controllers
 				return View(model);
 			}
 
+			ViewBag.Categories = SelectListItemHelper.CreateCategoriesList();
 			List<City> cities = geoNamesService.GetCitiesInBulgaria();
 			ViewBag.Cities = SelectListItemHelper.CreateOnlyCitiesSelectList(cities);
 
@@ -198,41 +178,6 @@ namespace PartyGuide.Web.Controllers
 				return Json(new { success = false });
 			}
 
-		}
-
-		[HttpPost]
-		public async Task<ActionResult> RateService(int serviceId, int rating, string comment)
-		{
-			try
-			{
-				if (!User.Identity.IsAuthenticated)
-				{
-					return Json(new { success = false, errorMessage = "You have to be logged in to submit a review for this service." });
-				}
-
-				// Check if the user has already submitted a review
-				var userId = User.FindFirst(ClaimTypes.Email)?.Value; // Adjust based on your authentication setup
-
-				var existingReview = await ratingManager.CheckIfUserHasRatedServiceAsync(serviceId, userId);
-
-				if (existingReview)
-				{
-					// User has already submitted a review
-					// You can choose to update the existing review or reject the new submission
-					return Json(new { success = false, errorMessage = "You have already submitted a review for this service." });
-				}
-
-				// Add the service rating
-				await ratingManager.AddNewRating(serviceId, userId, rating, comment);
-
-				// Return success message
-				return Json(new { success = true });
-			}
-			catch (Exception ex)
-			{
-				// Return error message
-				return Json(new { success = false, errorMessage = ex.Message });
-			}
 		}
 
 		public async Task<List<ServiceModel>> GetAllServices()

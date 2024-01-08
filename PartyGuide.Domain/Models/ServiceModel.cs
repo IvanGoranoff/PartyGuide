@@ -19,7 +19,7 @@ namespace PartyGuide.Domain.Models
 		public string Description { get; set; }
 
 		[Required(ErrorMessage = "Field Required")]
-		[RegularExpression(@"^.{40,300}$", ErrorMessage = "Extended must be between 40 and 300 characters")]
+		[RegularExpression(@"^.{40,2000}$", ErrorMessage = "Extended must be between 40 and 300 characters")]
 		public string ExtendedDescription { get; set; }
 
 		public byte[]? Image { get; set; }

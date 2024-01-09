@@ -26,7 +26,7 @@ namespace PartyGuide.UnitTest
 		/// </summary>
 		/// <returns></returns>
 
-	[TestMethod]
+		[TestMethod]
 		public async Task AddNewService_AuthenticatedUser_ReturnsRedirectToActionResult()
 		{
 			// Arrange
@@ -88,12 +88,9 @@ namespace PartyGuide.UnitTest
 		public async Task RateService_ValidInput_ReturnsJsonResult()
 		{
 			// Arrange
-			var loggerMock = new Mock<ILogger<ServiceController>>();
-			var serviceManagerMock = new Mock<IServiceManager>();
 			var ratingManagerMock = new Mock<IRatingManager>();
-			var geoNamesServiceMock = new Mock<IGeoNamesService>();
 
-			var controller = new ServiceController(loggerMock.Object, serviceManagerMock.Object, ratingManagerMock.Object, geoNamesServiceMock.Object);
+			var controller = new RatingController(ratingManagerMock.Object);
 			controller.ControllerContext = new ControllerContext
 			{
 				HttpContext = new DefaultHttpContext

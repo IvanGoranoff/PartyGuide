@@ -19,10 +19,10 @@ namespace PartyGuide.Web.Controllers
 		{
 			try
 			{
-				if (!User.Identity.IsAuthenticated)
-				{
-					return Json(new { success = false, errorMessage = "You have to be logged in to submit a review for this service." });
-				}
+				//if (!User.Identity.IsAuthenticated)
+				//{
+				//	return Json(new { success = false, errorMessage = "You have to be logged in to submit a review for this service." });
+				//}
 
 				// Check if the user has already submitted a review
 				var userId = User.FindFirst(ClaimTypes.Email)?.Value; // Adjust based on your authentication setup

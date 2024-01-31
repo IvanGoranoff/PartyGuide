@@ -19,10 +19,10 @@ namespace PartyGuide.Web.Controllers
 		{
 			try
 			{
-				//if (!User.Identity.IsAuthenticated)
-				//{
-				//	return Json(new { success = false, errorMessage = "You have to be logged in to submit a review for this service." });
-				//}
+				if (!User.Identity.IsAuthenticated)
+				{
+					return Json(new { success = false, errorMessage = "You have to be logged in to submit a review for this service." });
+				}
 
 				// Check if the user has already submitted a review
 				var userId = User.FindFirst(ClaimTypes.Email)?.Value; // Adjust based on your authentication setup
@@ -38,6 +38,40 @@ namespace PartyGuide.Web.Controllers
 
 				// Add the service rating
 				await ratingManager.AddNewRating(serviceId, userId, rating, comment);
+
+				// Return success message
+				return Json(new { success = true });
+			}
+			catch (Exception ex)
+			{
+				// Return error message
+				return Json(new { success = false, errorMessage = ex.Message });
+			}
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> UpdateRating(int serviceId, int rating, string comment)
+		{
+			try
+			{
+				if (!User.Identity.IsAuthenticated)
+				{
+					return Json(new { success = false, errorMessage = "You have to be logged in to submit a review for this service." });
+				}
+
+				// Check if the user has already submitted a review
+				var userId = User.FindFirst(ClaimTypes.Email)?.Value;
+
+				var existingReview = await ratingManager.CheckIfUserHasRatedServiceAsync(serviceId, userId);
+
+				if (!existingReview)
+				{
+					// User has not submitted a review
+					return Json(new { success = false, errorMessage = "You cannot edit this review." });
+				}
+
+				// Update the service rating
+				await ratingManager.UpdateRating(serviceId, rating, comment);
 
 				// Return success message
 				return Json(new { success = true });

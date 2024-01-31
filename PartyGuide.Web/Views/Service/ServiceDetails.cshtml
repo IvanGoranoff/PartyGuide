@@ -1,4 +1,5 @@
 ﻿@using PartyGuide.Domain.Models;
+@using System.Security.Claims
 @model ServiceModel
 @{
 	ViewData["Title"] = "Service Details";
@@ -127,6 +128,11 @@
 									</p>
 									<p class="card-text">Comment: @review.Comment</p>
 								</div>
+								@if (User.FindFirst(ClaimTypes.Email)?.Value == review.UserId)
+								{
+									
+								<button class="btn btn-warning float-end">Edit</button>
+								}
 							</div>
 						}
 					</div>
@@ -141,7 +147,7 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmvSeLopuyi10E0XlwBBbvarWa8voQalM&libraries=places"></script>
 
 
 <script>

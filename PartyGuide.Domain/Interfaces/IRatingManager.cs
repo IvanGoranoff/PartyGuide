@@ -6,5 +6,7 @@
 
         Task AddNewRating(int serviceId, string userId, int rating, string comment);
 
+        Task UpdateRating(int ratingId, int rating, string comment);
+
 	}
 }

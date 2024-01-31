@@ -86,10 +86,10 @@ namespace PartyGuide.Web.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddNewService(ServiceModel model, IFormFile imageFile)
 		{
-			//if (!User.Identity.IsAuthenticated)
-			//{
-			//	return View(model);
-			//}
+			if (!User.Identity.IsAuthenticated)
+			{
+				return View(model);
+			}
 
 			ViewBag.Categories = SelectListItemHelper.CreateCategoriesList();
 			List<City> cities = geoNamesService.GetCitiesInBulgaria();

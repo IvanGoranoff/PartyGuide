@@ -35,6 +35,18 @@ namespace PartyGuide.DataAccess.DbManagers
 			await dbContext.SaveChangesAsync();
 		}
 
+		public async Task UpdateRating(int ratingId, int rating, string comment)
+		{
+			var table = await dbContext.RatingTables.FirstOrDefaultAsync(r => r.Id == ratingId);
+
+			table.Rating = rating;
+			table.Comment = comment;
+
+			dbContext.RatingTables.Update(table);
+
+			await dbContext.SaveChangesAsync();
+		}
+
 		public async Task<bool> CheckIfUserHasRatedServiceAsync(int serviceId, string userId)
 		{
 			var table = await dbContext.RatingTables.FirstOrDefaultAsync(r => r.ServiceId == serviceId && r.UserId == userId);

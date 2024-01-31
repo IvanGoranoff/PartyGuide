@@ -27,5 +27,10 @@ namespace PartyGuide.Domain.Managers
 		{
 			await ratingDbManager.AddNewRating(serviceId, userId, rating, comment);
 		}
+
+		public async Task UpdateRating(int serviceId, int rating, string comment)
+		{
+			await ratingDbManager.UpdateRating(serviceId, rating, comment);
+		}
 	}
 }

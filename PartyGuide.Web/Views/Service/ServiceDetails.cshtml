@@ -248,4 +248,80 @@
 
 	// Initialize the map when the page is loaded
 	google.maps.event.addDomListener(window, 'load', initMap);
+	// Function to open the edit form (modal or inline form)
+function openEditForm(reviewId, currentRating, currentComment) {
+	// Populate the form with currentRating and currentComment
+	// Show the form to the user
+}
+
+// Function to handle the submission of the edited review
+function submitEditedReview(reviewId) {
+	var newRating = $('#editedRating').val(); // Get the new rating from the form
+	var newComment = $('#editedComment').val(); // Get the new comment from the form
+	var userEmail = '@User.FindFirst(ClaimTypes.Email)?.Value'; // Get the current user's email
+
+	$.ajax({
+		url: '@Url.Action("UpdateRating", "Rating")',
+		method: 'POST',
+		data: { 
+			ratingId: reviewId, 
+			newRating: newRating, 
+			newComment: newComment, 
+			userEmail: userEmail 
+		},
+		success: function(response) {
+			if(response.success) {
+				// Handle success (e.g., show a message, update the review on the page)
+			} else {
+				// Handle error (e.g., show error message)
+			}
+		},
+		error: function() {
+			// Handle AJAX error
+		}
+	});
+}
+function openEditForm(reviewId, currentRating, currentComment) {
+	// Assuming you have input fields with IDs 'editRating' and 'editComment' in your modal
+	$('#editRating').val(currentRating);
+	$('#editComment').val(currentComment);
+
+	// Store the reviewId in a hidden field or use a data attribute
+	$('#editReviewModal').data('review-id', reviewId);
+
+	// Show the modal
+	$('#editReviewModal').modal('show');
+}
+function submitEditedReview() {
+	var reviewId = $('#editReviewModal').data('review-id');
+	var newRating = $('#editRating').val();
+	var newComment = $('#editComment').val();
+	var userEmail = '@User.FindFirst(ClaimTypes.Email)?.Value'; // Get the user's email
+
+	$.ajax({
+		url: '@Url.Action("UpdateRating", "Rating")',
+		method: 'POST',
+		data: { 
+			ratingId: reviewId, 
+			newRating: newRating, 
+			newComment: newComment, 
+			userEmail: userEmail 
+		},
+		success: function(response) {
+			if(response.success) {
+				// Close the modal and update the review on the page
+				$('#editReviewModal').modal('hide');
+				// Additional code to update the review display on the page
+			} else {
+				// Show an error message
+				alert('Error: ' + response.errorMessage);
+			}
+		},
+		error: function() {
+			alert('An error occurred while updating the review.');
+		}
+	});
+}
+
+
 </script>

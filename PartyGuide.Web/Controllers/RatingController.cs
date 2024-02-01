@@ -49,38 +49,27 @@ namespace PartyGuide.Web.Controllers
 			}
 		}
 
+
 		[HttpPost]
-		public async Task<ActionResult> UpdateRating(int serviceId, int rating, string comment)
-		{
-			try
-			{
-				if (!User.Identity.IsAuthenticated)
-				{
-					return Json(new { success = false, errorMessage = "You have to be logged in to submit a review for this service." });
-				}
+        [HttpPost]
+        public async Task<ActionResult> UpdateRating(int ratingId, int newRating, string newComment, string userEmail)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Json(new { success = false, errorMessage = "You must be logged in." });
+            }
 
-				// Check if the user has already submitted a review
-				var userId = User.FindFirst(ClaimTypes.Email)?.Value;
+            var currentUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            if (currentUserEmail != userEmail)
+            {
+                return Json(new { success = false, errorMessage = "Unauthorized edit attempt." });
+            }
 
-				var existingReview = await ratingManager.CheckIfUserHasRatedServiceAsync(serviceId, userId);
+            // Add logic to get the review by ID and update it
+            // Example: await ratingManager.UpdateRatingAsync(ratingId, newRating, newComment);
 
-				if (!existingReview)
-				{
-					// User has not submitted a review
-					return Json(new { success = false, errorMessage = "You cannot edit this review." });
-				}
+            return Json(new { success = true });
+        }
 
-				// Update the service rating
-				await ratingManager.UpdateRating(serviceId, rating, comment);
-
-				// Return success message
-				return Json(new { success = true });
-			}
-			catch (Exception ex)
-			{
-				// Return error message
-				return Json(new { success = false, errorMessage = ex.Message });
-			}
-		}
-	}
+    }
 }

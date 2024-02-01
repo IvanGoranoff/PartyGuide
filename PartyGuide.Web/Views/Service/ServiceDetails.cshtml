@@ -94,6 +94,33 @@
 		</div>
 	</div>
 
+	<!-- Edit Review Modal -->
+<div class="modal fade" id="editReviewModal" tabindex="-1" aria-labelledby="editReviewModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="editReviewModalLabel">Edit Review</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="editReviewId">
+				<div class="mb-3">
+					<label for="editRating" class="form-label">Rating:</label>
+					<input type="number" class="form-control" id="editRating" min="1" max="5">
+				</div>
+				<div class="mb-3">
+					<label for="editComment" class="form-label">Comment:</label>
+					<textarea class="form-control" id="editComment" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="submitEditedReview()">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 	<!-- Reviews List Card -->
 	<div class="card mt-4">
 		<div class="card-header">
@@ -131,7 +158,8 @@
 								@if (User.FindFirst(ClaimTypes.Email)?.Value == review.UserId)
 								{
 									
-								<button class="btn btn-warning float-end">Edit</button>
+								<button class="btn btn-warning float-end" onclick="openEditForm('@review.Id', '@review.Rating', '@review.Comment')">Edit</button>
+
 								}
 							</div>
 						}
@@ -282,21 +310,17 @@ function submitEditedReview(reviewId) {
 	});
 }
 function openEditForm(reviewId, currentRating, currentComment) {
-	// Assuming you have input fields with IDs 'editRating' and 'editComment' in your modal
+	$('#editReviewId').val(reviewId);
 	$('#editRating').val(currentRating);
 	$('#editComment').val(currentComment);
-
-	// Store the reviewId in a hidden field or use a data attribute
-	$('#editReviewModal').data('review-id', reviewId);
-
-	// Show the modal
 	$('#editReviewModal').modal('show');
 }
+
 function submitEditedReview() {
-	var reviewId = $('#editReviewModal').data('review-id');
+	var reviewId = $('#editReviewId').val();
 	var newRating = $('#editRating').val();
 	var newComment = $('#editComment').val();
-	var userEmail = '@User.FindFirst(ClaimTypes.Email)?.Value'; // Get the user's email
+	var userEmail = '@User.FindFirst(ClaimTypes.Email)?.Value';
 
 	$.ajax({
 		url: '@Url.Action("UpdateRating", "Rating")',
@@ -309,11 +333,9 @@ function submitEditedReview() {
 		},
 		success: function(response) {
 			if(response.success) {
-				// Close the modal and update the review on the page
 				$('#editReviewModal').modal('hide');
-				// Additional code to update the review display on the page
+				location.reload(); // Reload to see the updated review
 			} else {
-				// Show an error message
 				alert('Error: ' + response.errorMessage);
 			}
 		},
@@ -322,6 +344,7 @@ function submitEditedReview() {
 		}
 	});
 }
+
 
 
 </script>

@@ -105,6 +105,8 @@
 			<div class="modal-body">
 				<input type="hidden" id="editReviewId">
 				<div class="mb-3">
+					<input type="hidden" id="editUserEmail">
+
 					<label for="editRating" class="form-label">Rating:</label>
 					<input type="number" class="form-control" id="editRating" min="1" max="5">
 				</div>
@@ -277,64 +279,30 @@
 	// Initialize the map when the page is loaded
 	google.maps.event.addDomListener(window, 'load', initMap);
 	// Function to open the edit form (modal or inline form)
-function openEditForm(reviewId, currentRating, currentComment) {
-	// Populate the form with currentRating and currentComment
-	// Show the form to the user
-}
-
-// Function to handle the submission of the edited review
-function submitEditedReview(reviewId) {
-	var newRating = $('#editedRating').val(); // Get the new rating from the form
-	var newComment = $('#editedComment').val(); // Get the new comment from the form
-	var userEmail = '@User.FindFirst(ClaimTypes.Email)?.Value'; // Get the current user's email
-
-	$.ajax({
-		url: '@Url.Action("UpdateRating", "Rating")',
-		method: 'POST',
-		data: { 
-			ratingId: reviewId, 
-			newRating: newRating, 
-			newComment: newComment, 
-			userEmail: userEmail 
-		},
-		success: function(response) {
-			if(response.success) {
-				// Handle success (e.g., show a message, update the review on the page)
-			} else {
-				// Handle error (e.g., show error message)
-			}
-		},
-		error: function() {
-			// Handle AJAX error
-		}
-	});
-}
-function openEditForm(reviewId, currentRating, currentComment) {
-	$('#editReviewId').val(reviewId);
+function openEditForm(userEmail, currentRating, currentComment) {
+	$('#editUserEmail').val(userEmail);
 	$('#editRating').val(currentRating);
 	$('#editComment').val(currentComment);
-	$('#editReviewModal').modal('show');
+	$('#editReviewModal').modal('show'); // Use this line if you have a modal for editing
 }
 
 function submitEditedReview() {
-	var reviewId = $('#editReviewId').val();
+	var userEmail = $('#editUserEmail').val();
 	var newRating = $('#editRating').val();
 	var newComment = $('#editComment').val();
-	var userEmail = '@User.FindFirst(ClaimTypes.Email)?.Value';
 
 	$.ajax({
 		url: '@Url.Action("UpdateRating", "Rating")',
 		method: 'POST',
 		data: { 
-			ratingId: reviewId, 
+			userEmail: userEmail, 
 			newRating: newRating, 
-			newComment: newComment, 
-			userEmail: userEmail 
+			newComment: newComment
 		},
 		success: function(response) {
 			if(response.success) {
 				$('#editReviewModal').modal('hide');
-				location.reload(); // Reload to see the updated review
+				// Update the review display on the page
 			} else {
 				alert('Error: ' + response.errorMessage);
 			}
@@ -344,6 +312,15 @@ function submitEditedReview() {
 		}
 	});
 }
+
+// Add event listener to Edit buttons
+$(document).on('click', '.edit-review-button', function() {
+	var userEmail = $(this).data('user-email');
+	var currentRating = $(this).data('current-rating');
+	var currentComment = $(this).data('current-comment');
+	openEditForm(userEmail, currentRating, currentComment);
+});
+
 
 
 

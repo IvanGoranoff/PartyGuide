@@ -295,14 +295,15 @@ function submitEditedReview() {
 		url: '@Url.Action("UpdateRating", "Rating")',
 		method: 'POST',
 		data: { 
-			userEmail: userEmail, 
-			newRating: newRating, 
-			newComment: newComment
+			rating: newRating, 
+			comment: newComment,
+			serviceId:@Model.Id
 		},
 		success: function(response) {
 			if(response.success) {
 				$('#editReviewModal').modal('hide');
 				// Update the review display on the page
+					location.reload();
 			} else {
 				alert('Error: ' + response.errorMessage);
 			}
@@ -315,7 +316,6 @@ function submitEditedReview() {
 
 // Add event listener to Edit buttons
 $(document).on('click', '.edit-review-button', function() {
-	var userEmail = $(this).data('user-email');
 	var currentRating = $(this).data('current-rating');
 	var currentComment = $(this).data('current-comment');
 	openEditForm(userEmail, currentRating, currentComment);
